@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-const Loging = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +28,7 @@ const Loging = () => {
       console.log("Password:", password);
       setEmail("");
       setPassword("");
+      setError("")
     } catch (err) {
       setError("Error al iniciar sesión");
     }
@@ -132,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Loging;
+export default Login;
