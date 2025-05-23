@@ -22,7 +22,7 @@ Asegúrate de tener instalado lo siguiente en tu sistema:
    
 3. Clonar el Repositorio
 Abre tu terminal de Git Bash y clona el repositorio:
-    2.1 Comando: git clone https://github.com/tu-usuario/synergy-match-app.git 
+    2.1 Comando: git clone https://github.com/snrgapp/desarrollomobile.git 
     2.2 Comando: cd synergy-match-app
 
 4. Instalar Dependencias
