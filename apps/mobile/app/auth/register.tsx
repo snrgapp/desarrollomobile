@@ -6,7 +6,7 @@ export default function RegisterScreen() {
   return (
     <View style={styles.container}>
       <Register />
-      <Link href="/auth/login" asChild>
+      <Link href="/auth/login" asChild replace>
         <TouchableOpacity style={styles.linkButton}>
           <Text style={styles.linkText}>Already have an account? Login</Text>
         </TouchableOpacity>
@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+    width: "100%",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
