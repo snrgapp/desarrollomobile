@@ -1,0 +1,10 @@
+
+{
+  "name": "db",
+  "version": "1.0.0",
+  "main": "lib/mongodb.js",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^6.6.0"
+  }
+}
