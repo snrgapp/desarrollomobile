@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     textAlign: "center",
-    marginBottom: 5,
+    marginBottom: 50,
     color: "#333",
     fontFamily: "Montserrat-Bold",
   },

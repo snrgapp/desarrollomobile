@@ -133,11 +133,11 @@ const Personalidad = () => {
               autoCapitalize="none"
               autoCorrect={false}
             />
-            {/* <Link href="/auth/login" asChild> */}
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Terminamos</Text>
-            </TouchableOpacity>
-            {/* </Link> */}
+            <Link href="/auth/login" asChild>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Terminamos</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
         </>
       )}

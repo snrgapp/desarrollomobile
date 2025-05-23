@@ -28,7 +28,7 @@ const Login = () => {
       console.log("Password:", password);
       setEmail("");
       setPassword("");
-      setError("")
+      setError("");
     } catch (err) {
       setError("Error al iniciar sesión");
     }
@@ -90,20 +90,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 5,
     color: "#333",
-    fontFamily: "Montserrat-Bold",
+    fontFamily: "Inter",
+    fontWeight: "400",
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
     textAlign: "center",
     marginBottom: 5,
     color: "#333",
-    fontFamily: "Montserrat-Bold",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
   },
   subtitle: {
     paddingTop: 50,
     paddingBottom: 20,
-    fontFamily: "Montserrat-Regular",
+    // fontFamily: "Montserrat",
+    fontWeight: "400",
     fontSize: 18,
     textAlign: "center",
     marginBottom: 30,
