@@ -1,0 +1,21 @@
+{
+  "name": "synergy-match-app-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "start:mobile": "pnpm --filter mobile start",
+    "build:web": "pnpm --filter web build",
+    "lint": "pnpm --filter '*' lint",
+    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules pnpm-lock.yaml"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.3",
+    "turbo": "latest"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
