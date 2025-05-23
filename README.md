@@ -143,7 +143,5 @@ Esto normalmente irá acompañado de un proceso de pruebas de integración y QA 
 
 
 
-
-
 EXITOS AL DESARROLLO DE SYNERGY-MATCH-APP      A por el exito.....!!!!!!
 
