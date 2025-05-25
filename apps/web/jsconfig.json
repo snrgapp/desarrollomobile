@@ -1,7 +1,10 @@
+// apps/web/jsconfig.json
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      // Add an alias for your 'db' package
+      "@repo/db/*": ["../../packages/db/*"] // Relative path from apps/web to packages/db
     }
   }
 }
