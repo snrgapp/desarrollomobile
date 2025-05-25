@@ -1,41 +1,47 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+**/node_modules/ # Esto ignora node_modules en cualquier subdirectorio
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Archivos de configuración y directorios generados por Pnpm
+pnpm-lock.yaml
+.pnpm-store/ # El store global de pnpm si lo tienes en la raíz
+.pnpm/       # Directorio de módulos vinculados por pnpm
+.pnpm-debug.log*
 
-# testing
-/coverage
+# Archivos de entorno y configuración local (¡muy importante por seguridad!)
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store # Archivos específicos de macOS
+Thumbs.db # Archivos específicos de Windows
+.vscode/ # Directorio de configuración de VS Code (opcional, si no quieres compartir configs de workspace)
 
-# next.js
-/.next/
-/out/
+# Next.js specific
+.next/ # Directorio de build de Next.js
+out/ # Si generas una salida estática
+.turbo/ # Directorio de caché de Turborepo si lo usas
 
-# production
-/build
+# Expo / React Native specific
+.expo/ # Directorio de caché y configuración de Expo
+web-build/ # Directorio de build para la versión web de Expo
+# Los siguientes ya suelen estar en .expo/, pero se pueden añadir para mayor seguridad
+# android/
+# ios/
+# Si no quieres versionar los directorios nativos generados
+# app.json # Si es generado y no manual
+# expo-env.d.ts # Si es generado
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Archivos de logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
+# Caché de TypeScript
 *.tsbuildinfo
-next-env.d.ts
+
+# Archivos de editor de texto
+*.swp # vim
+*.swo # vim
+node_modules

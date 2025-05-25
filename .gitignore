@@ -1,1 +1,47 @@
+**/node_modules/ # Esto ignora node_modules en cualquier subdirectorio
+
+# Archivos de configuración y directorios generados por Pnpm
+pnpm-lock.yaml
+.pnpm-store/ # El store global de pnpm si lo tienes en la raíz
+.pnpm/       # Directorio de módulos vinculados por pnpm
+.pnpm-debug.log*
+
+# Archivos de entorno y configuración local (¡muy importante por seguridad!)
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store # Archivos específicos de macOS
+Thumbs.db # Archivos específicos de Windows
+.vscode/ # Directorio de configuración de VS Code (opcional, si no quieres compartir configs de workspace)
+
+# Next.js specific
+.next/ # Directorio de build de Next.js
+out/ # Si generas una salida estática
+.turbo/ # Directorio de caché de Turborepo si lo usas
+
+# Expo / React Native specific
+.expo/ # Directorio de caché y configuración de Expo
+web-build/ # Directorio de build para la versión web de Expo
+# Los siguientes ya suelen estar en .expo/, pero se pueden añadir para mayor seguridad
+# android/
+# ios/
+# Si no quieres versionar los directorios nativos generados
+# app.json # Si es generado y no manual
+# expo-env.d.ts # Si es generado
+
+# Archivos de logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Caché de TypeScript
+*.tsbuildinfo
+
+# Archivos de editor de texto
+*.swp # vim
+*.swo # vim
 node_modules
