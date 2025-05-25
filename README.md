@@ -7,7 +7,7 @@ Este README.md te guiará a través de la configuración del entorno de desarrol
 🚀 Inicio Rápido
 Sigue estos pasos para poner en marcha tu entorno de desarrollo local.
 
-1. Requisitos Previos
+1.- Requisitos Previos
 Asegúrate de tener instalado lo siguiente en tu sistema:
 
     1.1 Git: Descargar Git
@@ -20,31 +20,31 @@ Asegúrate de tener instalado lo siguiente en tu sistema:
         Configura al menos un AVD (Android Virtual Device) para emular un dispositivo Android.
     1.6 Descargar Visual Code Node.js
    
-3. Clonar el Repositorio
+2.- Clonar el Repositorio
 Abre tu terminal de Git Bash y clona el repositorio:
-    2.1 Comando: git clone https://github.com/tu-usuario/synergy-match-app.git 
+    2.1 Comando: git clone https://github.com/snrgapp/desarrollomobile.git 
     2.2 Comando: cd synergy-match-app
 
-4. Instalar Dependencias
+3.- Instalar Dependencias
 Una vez dentro de la carpeta raíz del monorepo, instala todas las dependencias:
     3.1 Comando: pnpm install
     Este comando instalará las dependencias para todos los workspaces (web, mobile, db). Si hay algún mensaje sobre "Ignored build scripts" (por ejemplo, para sharp o unrs-        resolver), ejecútalo y confírmalo:
         3.1.1 Comando: pnpm approve-builds
                 # Responde 'Y' cuando te lo pida
 
-5. Iniciar las Aplicaciones desde Visual Code
-   5.1 Abre una nueva Ventana y abre la carpeta descargada con el proyecto
+4.- Iniciar las Aplicaciones desde Visual Code
+   4.1 Abre una nueva Ventana y abre la carpeta descargada con el proyecto
 
     Puedes iniciar las aplicaciones web y móvil en paralelo.
 
-    5.2 Iniciar la Aplicación Web (Next.js)
-        5.2.1 En una nueva terminal, desde la raíz del monorepo:
+   4.2 Iniciar la Aplicación Web (Next.js)
+        4.2.1 En una nueva terminal, desde la raíz del monorepo:
 
             Comando: pnpm run dev:web
                 La aplicación web estará disponible en http://localhost:3000.
 
-    5.3 Iniciar la Aplicación Móvil (React Native/Expo)
-        5.3.1 En otra nueva terminal, navega a la carpeta de la aplicación móvil:
+    4.3 Iniciar la Aplicación Móvil (React Native/Expo)
+        4.3.1 En otra nueva terminal, navega a la carpeta de la aplicación móvil:
 
             Comando: cd apps/mobile
             Comando pnpm start
@@ -55,6 +55,7 @@ Una vez dentro de la carpeta raíz del monorepo, instala todas las dependencias:
             Acceder a la versión web de la aplicación móvil en http://localhost:8081 (útil para depuración en el navegador).
 
 🌳 Flujo de Trabajo con Git (IMPORTANTE)
+
 1.- Para mantener el código organizado y colaborativo, seguiremos este flujo de trabajo:
 
     1.1 main: Rama principal de producción. Contiene el código estable listo para el despliegue. Nunca se trabaja directamente en main. Los merge a main solo se hacen desde                  dev después de una revisión exhaustiva y pruebas finales.
