@@ -4,6 +4,10 @@ import { NextResponse } from "next/server";
 import { UserModel } from "@repo/db/models/user";
 
 
+// export const runtime = 'nodejs'; // 👈 MUY IMPORTANTE para que Mongoose funcione
+// export const dynamic = 'force-dynamic'; // 👈 Evita el cacheo de Next.js
+
+
 //METODO POST api/user Crear un nuevo usuario
 export async function POST(req) {
   try {
@@ -68,3 +72,33 @@ export async function POST(req) {
 }
 
 //METODO GET api/user Buscar todo los usuarios
+
+export async function GET(req) {
+  try {
+
+    // ✅ Conexión a la base de datos
+
+    await dbConnect()
+
+    //Consulta a la base de datos
+   // console.log(mongoose.connection.readyState)
+    const allUsers = await UserModel.find()
+  //  console.log(mongoose.connection.readyState)
+
+    // Validación de la respuesta
+    if (!allUsers){
+      return NextResponse.json({message: "Por el momento no hay usuarios"}, {status: 404})
+    }
+
+    //Mostramos la respuesta
+
+    return NextResponse.json({message: "Lista de usuarios Registrados", data: allUsers},{status:201})
+    
+    
+  } catch (error) {
+    console.error("Error al obtener los usuarios", error);
+    return NextResponse.json({ error: "Error interno al obtener los usuarios" }, { status: 500 });
+    
+  }
+}
+
