@@ -18,7 +18,29 @@ export default function AuthLayout() {
         options={{
           title: "Register",
           headerShown: false,
-          // You can customize header styles here
+          headerTitleStyle: {
+            fontFamily: "Montserrat-Regular",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="emprendimiento"
+        options={{
+          title: "Emprendimiento",
+          headerShown: false,
+          headerTitleStyle: {
+            fontFamily: "Montserrat-Regular",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="personalidad"
+        options={{
+          title: "Personalidad",
+          headerShown: false,
+          headerTitleStyle: {
+            fontFamily: "Montserrat-Regular",
+          },
         }}
       />
     </Stack>

@@ -6,7 +6,7 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <Login />
-      <Link href="/auth/register" asChild>
+      <Link href="/auth/register" asChild replace>
         <TouchableOpacity style={styles.linkButton}>
           <Text style={styles.linkText}>
             Don&apos;t have an account? Register
