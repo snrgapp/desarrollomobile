@@ -2,9 +2,11 @@
   "name": "db",
   "version": "1.0.0",
   "main": "lib/mongodb.js",
+  "type": "module",
   "license": "ISC",
+ 
   "dependencies": {
-    "aws4": "^1.13.2",
-    "mongodb": "^6.6.0"
+    "mongodb": "^6.6.0",
+    "mongoose": "^8.15.0"
   }
 }
