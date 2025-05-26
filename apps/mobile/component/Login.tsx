@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-const Loging = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +28,7 @@ const Loging = () => {
       console.log("Password:", password);
       setEmail("");
       setPassword("");
+      setError("");
     } catch (err) {
       setError("Error al iniciar sesión");
     }
@@ -89,20 +90,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 5,
     color: "#333",
-    fontFamily: "Montserrat-Bold",
+    fontFamily: "Inter",
+    fontWeight: "400",
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
     textAlign: "center",
     marginBottom: 5,
     color: "#333",
-    fontFamily: "Montserrat-Bold",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
   },
   subtitle: {
     paddingTop: 50,
     paddingBottom: 20,
-    fontFamily: "Montserrat-Regular",
+    // fontFamily: "Montserrat",
+    fontWeight: "400",
     fontSize: 18,
     textAlign: "center",
     marginBottom: 30,
@@ -132,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Loging;
+export default Login;

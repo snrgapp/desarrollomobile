@@ -1,14 +1,12 @@
+import Register from "@/component/Register";
 import { Link } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function RegisterScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
-
-      {/* Form component*/}
-
-      <Link href="/auth/login" asChild>
+      <Register />
+      <Link href="/auth/login" asChild replace>
         <TouchableOpacity style={styles.linkButton}>
           <Text style={styles.linkText}>Already have an account? Login</Text>
         </TouchableOpacity>
@@ -23,6 +21,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+    width: "100%",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
