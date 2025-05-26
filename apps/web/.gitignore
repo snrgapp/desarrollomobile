@@ -45,3 +45,6 @@ yarn-error.log*
 *.swp # vim
 *.swo # vim
 node_modules
+
+# Next.js build output
+.next/
