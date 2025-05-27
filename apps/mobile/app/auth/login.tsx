@@ -1,14 +1,24 @@
 import Login from "@/component/Login";
-import { Link } from "expo-router";
+import useAuthStore from "@/stores/authStore";
+import { Link, router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
+  const goToRegister = (): void => {
+    router.push("/auth/register");
+  };
+  const { isLoading } = useAuthStore();
+
   return (
     <View style={styles.container}>
       <Login />
       <Link href="/auth/register" asChild replace>
         <TouchableOpacity style={styles.linkButton}>
-          <Text style={styles.linkText}>
+          <Text
+            style={styles.linkText}
+            onPress={goToRegister}
+            disabled={isLoading}
+          >
             Don&apos;t have an account? Register
           </Text>
         </TouchableOpacity>
