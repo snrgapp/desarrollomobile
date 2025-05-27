@@ -2,6 +2,7 @@
 import dbConnect from "@repo/db/lib/mongodb";
 import { NextResponse } from "next/server";
 import { UserModel } from "@repo/db/models/user";
+import { verifyApiToken } from "@/lib/api-jwt-middleware";
 
 
 // export const runtime = 'nodejs'; // 👈 MUY IMPORTANTE para que Mongoose funcione
@@ -10,7 +11,12 @@ import { UserModel } from "@repo/db/models/user";
 
 //METODO POST api/user Crear un nuevo usuario
 export async function POST(req) {
-  try {
+  const { error, decodedToken } = await verifyApiToken(req);
+
+    if (error) {
+        return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
+    }
+    try {
     // ✅ Conexión a la base de datos primero
     await dbConnect();
 
@@ -74,6 +80,18 @@ export async function POST(req) {
 //METODO GET api/user Buscar todo los usuarios
 
 export async function GET(req) {
+
+   console.log("Authorization header:", req.headers.authorization);
+
+  const { error, decodedToken } = await verifyApiToken(req); // Verifica el JWT de tu API
+
+    if (error) {
+        return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
+    }
+
+    // El decodedToken contendrá el id, email, name que pusiste en el JWT personalizado
+    console.log('Authenticated user ID (from JWT):', decodedToken.id);
+
   try {
 
     // ✅ Conexión a la base de datos
@@ -86,13 +104,13 @@ export async function GET(req) {
   //  console.log(mongoose.connection.readyState)
 
     // Validación de la respuesta
-    if (!allUsers){
-      return NextResponse.json({message: "Por el momento no hay usuarios"}, {status: 404})
-    }
+    // if (!allUsers){
+    //   return NextResponse.json({message: "Por el momento no hay usuarios"}, {status: 404})
+    // }
 
     //Mostramos la respuesta
 
-    return NextResponse.json({message: "Lista de usuarios Registrados", data: allUsers},{status:201})
+    return NextResponse.json({message: "Lista de usuarios Registrados", data: allUsers},{status:200})
     
     
   } catch (error) {
