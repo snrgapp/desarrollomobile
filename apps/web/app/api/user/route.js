@@ -3,6 +3,8 @@ import dbConnect from "@repo/db/lib/mongodb";
 import { NextResponse } from "next/server";
 import { UserModel } from "@repo/db/models/user";
 import { verifyApiToken } from "@/lib/api-jwt-middleware";
+import bcrypt from 'bcrypt';
+import { usernumber } from "@/lib/generateusernumber";
 
 
 // export const runtime = 'nodejs'; // 👈 MUY IMPORTANTE para que Mongoose funcione
@@ -11,11 +13,11 @@ import { verifyApiToken } from "@/lib/api-jwt-middleware";
 
 //METODO POST api/user Crear un nuevo usuario
 export async function POST(req) {
-  const { error, decodedToken } = await verifyApiToken(req);
+  // const { error, decodedToken } = await verifyApiToken(req);
 
-    if (error) {
-        return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
-    }
+  //   if (error) {
+  //       return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
+  //   }
     try {
     // ✅ Conexión a la base de datos primero
     await dbConnect();
@@ -33,32 +35,24 @@ export async function POST(req) {
       return NextResponse.json({ error: `Falta el campo: ${missingField}` }, { status: 400 });
     }
 
-     // --- Lógica para generar el userNumber ---
-        let nextUserNumber;
-
-        // 1. Encontrar el usuario con el userNumber más alto
-        // Ordenamos por userNumber de forma descendente (-1) y limitamos a 1
-        const lastUser = await UserModel.findOne().sort({ userNumber: -1 }).limit(1);
-
-        if (lastUser) {
-            // Si hay un último usuario, incrementa su userNumber
-            nextUserNumber = lastUser.userNumber + 1;
-        } else {
-            // Si la colección está vacía, el primer userNumber es 100001
-            nextUserNumber = 100001;
-        }
-
+     
     // ✅ Verifica si ya existe un usuario con ese email
     const existingUser = await UserModel.findOne({ email: body.email });
     if (existingUser) {
       return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
     }
+        // ✅ Encripta la contraseña antes de guardarla
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(body.password, saltRounds);
 
-    console.log("userNumber", nextUserNumber);
+
+    const userNumber = await usernumber(); // Genera un nuevo userNumber
+   
     // ✅ Crea el nuevo usuario
     const newBody = {
         ...body, 
-        userNumber : nextUserNumber
+        password: hashedPassword,
+        userNumber : userNumber
     }
     const newUser = await UserModel.create(newBody);
     // Aquí puedes agregar lógica adicional si es necesario, como enviar un correo de bienvenida
