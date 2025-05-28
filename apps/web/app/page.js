@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation"; // Para useRouter en App Router
   }
 
   const handleLogin = () => {
-    console.log("Ingresa datos de acceso");
+    router.push("/login");
   }
 
   return (

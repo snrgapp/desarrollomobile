@@ -59,6 +59,7 @@ import { ObjectId } from 'mongodb';
 import { clientPromise } from "@repo/db/lib/mongodb"; 
 import dbConnect from '@repo/db/lib/mongodb';
 import { UserModel } from '@repo/db/models/user';
+import { usernumber } from '@/lib/generateusernumber';
 
 export const authOptions = {
   
@@ -107,32 +108,35 @@ export const authOptions = {
   // Añade el objeto `events` para manejar acciones al crear un usuario
   events: {
     async createUser(message) {
-    console.log('Nuevo usuario creado en la base de datos (por NextAuth):', message.user);
+      console.log('Nuevo usuario creado en la base de datos (por NextAuth):', message.user);
     
-    try {
-    // Usa el cliente nativo de MongoDB que ya está conectado por el adaptador
-    const client = await clientPromise;
-    const db = client.db(); // Obtiene la base de datos (por defecto o especifica el nombre)
-    
-    // Actualiza el documento del usuario directamente usando el driver nativo
-    // message.user.id ya es el _id del documento de MongoDB
-    const result = await db.collection("users").updateOne(
-    { _id: new ObjectId(message.user.id) }, // Busca por _id usando ObjectId
-    { $set: { profileCompleted: false } } // Establece el campo
-    );
-    
-    if (result.modifiedCount === 1) {
-    console.log(`Campo 'profileCompleted' establecido a false para el usuario ${message.user.id} en la DB.`);
-    } else {
-    console.warn(`Advertencia: No se pudo establecer 'profileCompleted' para el usuario ${message.user.id} en el evento createUser. Modificados: ${result.modifiedCount}`);
-    }
+      try {
+          // Usa el cliente nativo de MongoDB que ya está conectado por el adaptador
+          const client = await clientPromise;
+          const db = client.db(); // Obtiene la base de datos (por defecto o especifica el nombre)
+          
+          const userNumber = await usernumber()
+          // Actualiza el documento del usuario directamente usando el driver nativo
+          // message.user.id ya es el _id del documento de MongoDB
+          const result = await db.collection("users").updateOne(
+                { _id: new ObjectId(message.user.id) }, // Busca por _id usando ObjectId
+                { $set: { profileCompleted: false,
+                          userNumber: userNumber // Establece el campo
+                 } } // Establece el campo
+          );
+          
+          if (result.modifiedCount === 1) {
+              console.log(`Campo 'profileCompleted' establecido a false para el usuario ${message.user.id} en la DB.`);
+          } else {
+              console.warn(`Advertencia: No se pudo establecer 'profileCompleted' para el usuario ${message.user.id} en el evento createUser. Modificados: ${result.modifiedCount}`);
+          }
 
-    } catch (error) {
-    console.error("Error al actualizar 'profileCompleted' en createUser event (driver nativo):", error);
-    }
+          } catch (error) {
+              console.error("Error al actualizar 'profileCompleted' en createUser event (driver nativo):", error);
+          }
 
     },
-    },
+  },
       
       pages: {
         signIn: '/', // Esto redirige a la raíz si no está autenticado. La lógica del frontend manejará la redirección a /complete-profile.

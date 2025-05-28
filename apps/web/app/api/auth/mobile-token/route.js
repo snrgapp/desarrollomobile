@@ -24,12 +24,15 @@ export async function GET(request) {
 
     //console.log(session)
 
+    // Incluimos si el usuario se autenticó con Google
+    const provider = session.user?.provider || "credentials"; // Fallback a "credentials" si no hay info
 
     const token = jwt.sign(
         {
             id: session.user.id, // ID del usuario de MongoDB
             email: session.user.email,
             name: session.user.name,
+            provider: provider, // puede ser 'google' o 'credentials'
            // regisession: "2", // si es 2 es porque es un usuario registrado desde la google auth
             // ... cualquier otra información relevante del usuario que quieras en el token
         },
