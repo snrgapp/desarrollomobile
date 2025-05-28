@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken';
 export async function GET(request) {
     const session = await getServerSession(authOptions);
 
+    console.log("esto es session",session)
+
     if (!session) {
         return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
     }
@@ -28,12 +30,12 @@ export async function GET(request) {
             id: session.user.id, // ID del usuario de MongoDB
             email: session.user.email,
             name: session.user.name,
-            regisession: "2", // si es 2 es porque es un usuario registrado desde la google auth
+           // regisession: "2", // si es 2 es porque es un usuario registrado desde la google auth
             // ... cualquier otra información relevante del usuario que quieras en el token
         },
         apiSecret,
         { expiresIn: '1h' } // Token expira en 1 hora
     );
-
+console.log("Token generado para la app móvil:", token);
     return NextResponse.json({ token });
 }

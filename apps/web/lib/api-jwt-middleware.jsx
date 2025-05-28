@@ -18,7 +18,11 @@ export const verifyApiToken = async (req) => {
 
     } catch (err) {
         console.error('❌ Error verifying token:', err);
+        if (err.name === 'TokenExpiredError') {
+            return { error: 'TokenExpiredError', decodedToken: null };
+        }
         return { error: err.message, decodedToken: null };
+    
     }
 };
 // Este middleware verifica el JWT de la API y devuelve el token decodificado o un error

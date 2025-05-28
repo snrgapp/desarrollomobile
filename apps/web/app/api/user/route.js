@@ -81,7 +81,7 @@ export async function POST(req) {
 
 export async function GET(req) {
 
-   console.log("Authorization header:", req.headers.authorization);
+   ///console.log("Authorization header buscar usuarios:", req.headers.authorization);
 
   const { error, decodedToken } = await verifyApiToken(req); // Verifica el JWT de tu API
 

@@ -2,7 +2,7 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/user/route": "app/api/user/route.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js",
-  "/homeuser/page": "app/homeuser/page.js"
+  "/api/auth/mobile-token/route": "app/api/auth/mobile-token/route.js",
+  "/homeuser/page": "app/homeuser/page.js",
+  "/page": "app/page.js"
 }

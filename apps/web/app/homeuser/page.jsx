@@ -18,7 +18,7 @@ export default function HomePage() {
   // Redirigir a login si no está autenticado
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login");
+      router.push("/");
     }
   }, [status, router]);
 

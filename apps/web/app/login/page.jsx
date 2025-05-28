@@ -31,8 +31,6 @@ export default function LoginPage() {
         <div>
           <p>No autenticado</p>
           <button onClick={() => signIn("google")}>Iniciar sesión con Google</button> <br />
-            <button onClick={() => signIn("Instagram")}>Iniciar sesión con Instagram</button><br />
-            <button onClick={() => signIn("facebook")}>Iniciar sesión con Facebook</button><br />
 
           {/* Puedes añadir más botones para otros proveedores */}
         </div>
