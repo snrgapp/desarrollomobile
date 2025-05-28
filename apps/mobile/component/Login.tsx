@@ -1,41 +1,68 @@
-import { useState } from "react";
+import useAuthStore from "@/stores/authStore";
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
+import type { LoginForm } from "@/stores/authStore";
 
-const Loging = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+const Login = () => {
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    setLoading(true);
-    setError("");
-    if (!email || !password) {
-      setError("Por favor, completa todos los campos");
-      setLoading(false);
-      return;
+  // const handleLogin = () => {
+  //   setLoading(true);
+  //   setError("");
+  //   if (!email || !password) {
+  //     setError("Por favor, completa todos los campos");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     // Aquí iría la lógica de autenticación
+  //     console.log("Email:", email);
+  //     console.log("Password:", password);
+  //     setEmail("");
+  //     setPassword("");
+  //     setError("");
+  //   } catch (err) {
+  //     setError("Error al iniciar sesión");
+  //   }
+  // };
+  const { loginForm, isLoading, error, updateLoginForm, login, clearError } =
+    useAuthStore();
+
+  const handleLogin = async (): Promise<void> => {
+    const result = await login();
+
+    if (result.success) {
+      console.log(result);
+    } else {
+      Alert.alert("Login Failed", result.error || "An error occurred");
     }
+  };
 
-    try {
-      // Aquí iría la lógica de autenticación
-      console.log("Email:", email);
-      console.log("Password:", password);
-      setEmail("");
-      setPassword("");
-    } catch (err) {
-      setError("Error al iniciar sesión");
-    }
+  const handleInputChange = (field: keyof LoginForm, value: string): void => {
+    if (error) clearError();
+    updateLoginForm(field, value);
+  };
+
+  const isFormValid = (): boolean => {
+    return (
+      loginForm.email.trim().length > 0 && loginForm.password.trim().length > 0
+    );
   };
 
   return (
     <View style={styles.container}>
-      {loading ? (
+      {isLoading ? (
         <View>
           <Text>...loading</Text>
         </View>
@@ -50,25 +77,41 @@ const Loging = () => {
           <View>
             <TextInput
               style={styles.input}
-              placeholder="mail"
-              value={email}
-              onChangeText={setEmail}
+              placeholder="Email"
+              value={loginForm.email}
+              onChangeText={(value) => handleInputChange("email", value)}
               keyboardType="email-address"
               autoCapitalize="none"
-              autoCorrect={false}
+              autoComplete="email"
+              editable={!isLoading}
+              testID="email-input"
             />
 
             <TextInput
               style={styles.input}
-              placeholder="password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
+              placeholder="Password"
+              value={loginForm.password}
+              onChangeText={(value) => handleInputChange("password", value)}
+              secureTextEntry
+              autoComplete="password"
+              editable={!isLoading}
+              testID="password-input"
               autoCapitalize="none"
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-              <Text style={styles.buttonText}>Login</Text>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                (!isFormValid() || isLoading) && styles.buttonDisabled,
+              ]}
+              onPress={handleLogin}
+              disabled={!isFormValid() || isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.buttonText}>Login</Text>
+              )}
             </TouchableOpacity>
           </View>
         </>
@@ -89,20 +132,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 5,
     color: "#333",
-    fontFamily: "Montserrat-Bold",
+    fontFamily: "Inter",
+    fontWeight: "400",
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
     textAlign: "center",
     marginBottom: 5,
     color: "#333",
-    fontFamily: "Montserrat-Bold",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
   },
   subtitle: {
     paddingTop: 50,
     paddingBottom: 20,
-    fontFamily: "Montserrat-Regular",
+    // fontFamily: "Montserrat",
+    fontWeight: "400",
     fontSize: 18,
     textAlign: "center",
     marginBottom: 30,
@@ -125,6 +170,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
   buttonText: {
     color: "white",
     fontSize: 18,
@@ -132,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Loging;
+export default Login;
