@@ -5,6 +5,15 @@ import { UserModel } from "@repo/db/models/user";
 //METODO PUT api/user/:id Actualizar un usuario por email
 
 export async function PUT(req, {params}){
+  const { error, decodedToken } = await verifyApiToken(req); // Verifica el JWT de tu API
+  
+      if (error) {
+          return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
+      }
+  
+      // El decodedToken contendrá el id, email, name que pusiste en el JWT personalizado
+      console.log('Authenticated user ID (from JWT):', decodedToken.id);
+
   try {
 
         // ✅ Conexión a la base de datos
@@ -53,6 +62,16 @@ export async function PUT(req, {params}){
 //METODO DELETE api/user/:id Eliminar un usuario por email
 
 export async function DELETE(req, {params}){
+
+   const { error, decodedToken } = await verifyApiToken(req); // Verifica el JWT de tu API
+  
+      if (error) {
+          return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
+      }
+  
+      // El decodedToken contendrá el id, email, name que pusiste en el JWT personalizado
+      console.log('Authenticated user ID (from JWT):', decodedToken.id);
+
   try {
      // ✅ Conexión a la base de datos
         await dbConnect();
