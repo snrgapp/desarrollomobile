@@ -1,11 +1,16 @@
 import Emprendimiento from "@/component/Emprendimiento";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
   return (
-    <View style={styles.container}>
-      <Emprendimiento />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
+        <View style={styles.container}>
+          <Emprendimiento />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -15,6 +20,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+    width: "100%",
+    backgroundColor: "#fff",
+    overflow: "scroll",
   },
   title: {
     fontSize: 24,

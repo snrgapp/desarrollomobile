@@ -42,14 +42,6 @@ const Emprendimiento = () => {
       error: "",
     });
   };
-  const handleLogin = () => {
-    try {
-      console.log("Data:", input);
-      resetInputs();
-    } catch (err) {
-      setInput({ ...input, error: "Error al iniciar sesión" });
-    }
-  };
 
   const handleChange = <K extends keyof FormData>(
     field: K,
@@ -151,6 +143,7 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     backgroundColor: "#fff",
+    width: "100%",
   },
   title: {
     fontSize: 28,
