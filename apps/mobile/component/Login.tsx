@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Image from "expo-image";
 
 const Login = () => {
   const { loginForm, isLoading, error, updateLoginForm, login, clearError } =
@@ -61,17 +62,24 @@ const Login = () => {
               testID="email-input"
             />
 
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={loginForm.password}
-              onChangeText={(value) => handleInputChange("password", value)}
-              secureTextEntry
-              autoComplete="password"
-              editable={!isLoading}
-              testID="password-input"
-              autoCapitalize="none"
-            />
+            <TouchableOpacity
+              style={[
+                styles.googleButton,
+                (!isFormValid() || isLoading) && styles.buttonDisabled,
+              ]}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <View style={{ width: "100%", alignItems: "center" }}>
+                  <Image
+                    style={styles.googleLogo}
+                    source={require("../assets/images/google-logo.png")}
+                  />
+                  <Text style={styles.googleLabel}>Log in with google</Text>
+                </View>
+              )}
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={[
@@ -136,6 +144,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: "#f9f9f9",
     fontFamily: "Montserrat-Regular",
+  },
+  googleButton: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginBottom: 20,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  googleLogo: {
+    position: "absolute",
+    left: 20,
+    width: 20,
+    height: 20,
+    marginRight: 20,
+  },
+  googleLabel: {
+    fontSize: 14,
+    fontWeight: "600",
   },
   button: {
     backgroundColor: "#007BFF",
