@@ -57,7 +57,7 @@ import { ObjectId } from 'mongodb';
 
 // Asume que este clientPromise es la promesa de tu cliente nativo de MongoDB
 import { clientPromise } from "@repo/db/lib/mongodb"; 
-import dbConnect from '@repo/db/lib/mongodb';
+
 import { UserModel } from '@repo/db/models/user';
 import { usernumber } from '@/lib/generateusernumber';
 
@@ -69,6 +69,7 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  
   // ✅ Pasa la promesa del cliente nativo de MongoDB al adaptador
   adapter: MongoDBAdapter(clientPromise), 
   
