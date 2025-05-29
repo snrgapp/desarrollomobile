@@ -1,5 +1,6 @@
 import type { LoginForm } from "@/stores/authStore";
 import useAuthStore from "@/stores/authStore";
+import { Image } from "expo-image";
 import {
   ActivityIndicator,
   Alert,
@@ -9,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Image from "expo-image";
 
 const Login = () => {
   const { loginForm, isLoading, error, updateLoginForm, login, clearError } =
@@ -50,6 +50,36 @@ const Login = () => {
             <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
           ) : null}
           <View>
+            <TouchableOpacity
+              style={[
+                styles.googleButton,
+                (!isFormValid() || isLoading) && styles.buttonDisabled,
+              ]}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <View
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    style={styles.googleLogo}
+                    source={require("../assets/images/google-logo.png")}
+                  />
+                  <Text style={styles.googleLabel}>Log in with Google</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <View style={styles.lineContainer}>
+              <View style={styles.line} />
+              <Text style={styles.text}>Or use you email</Text>
+              <View style={styles.line} />
+            </View>
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -61,26 +91,6 @@ const Login = () => {
               editable={!isLoading}
               testID="email-input"
             />
-
-            <TouchableOpacity
-              style={[
-                styles.googleButton,
-                (!isFormValid() || isLoading) && styles.buttonDisabled,
-              ]}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <View style={{ width: "100%", alignItems: "center" }}>
-                  <Image
-                    style={styles.googleLogo}
-                    source={require("../assets/images/google-logo.png")}
-                  />
-                  <Text style={styles.googleLabel}>Log in with google</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-
             <TouchableOpacity
               style={[
                 styles.button,
@@ -145,6 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
     fontFamily: "Montserrat-Regular",
   },
+
   googleButton: {
     backgroundColor: "#fff",
     borderWidth: 1,
@@ -165,8 +176,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   googleLogo: {
-    position: "absolute",
-    left: 20,
     width: 20,
     height: 20,
     marginRight: 20,
@@ -175,6 +184,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
+
+  lineContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E0E0E0",
+  },
+  text: {
+    marginHorizontal: 15,
+    fontSize: 14,
+    color: "#888",
+    fontWeight: "400",
+  },
+
   button: {
     backgroundColor: "#007BFF",
     paddingVertical: 10,
