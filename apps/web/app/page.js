@@ -1,16 +1,21 @@
-"use client"; // Este componente es del lado del cliente
+"use client";
+
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation"; // Para useRouter en App Router
 
-  
-  export default function Home() {
+
+export default function WelcomePage() {
+
+
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/homeuser"); // Redirige a la página principal si ya está autenticado
+      console.log("usuario autenticado:", session.user);
+      //router.push("/dashboard"); // Redirige a la página principal si ya está autenticado
     }
   }, [status, router]);
 
@@ -18,49 +23,62 @@ import { useRouter } from "next/navigation"; // Para useRouter en App Router
     return <p>Cargando sesión...</p>;
   }
 
-  const handleLogin = () => {
-    console.log("Ingresa datos de acceso");
-  }
+  console.log("WelcomePage");
+  
+
+  const handleEnter = () => {
+     console.log("Redirigiendo a login...");
+    router.push("/login");
+  };
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-gray-900 px-6 py-12">
+      {/* Contenedor principal con un fondo claro y texto oscuro */}
+      
+      <motion.div
+        className="flex flex-col items-center justify-center bg-white p-8 sm:p-12 rounded-3xl shadow-xl max-w-2xl w-full text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {/* Un contenedor blanco que centra el contenido y le da un aspecto más de "tarjeta" */}
 
-    <div>
-      <h1>Pagina Principal</h1>
-      <p>Bienvenido a la aplicación de Synergy Match </p>
-      <p>Inicia sesión para continuar.</p>
-      <p>
-        Si no tienes una cuenta, puedes registrarte en el siguiente enlace:
-        <br />
-        <button onClick={() => signIn("google")}>Iniciar sesión con Google
-          <img
-            src="/Google.png" // Example URL
-            alt="Google Logo"
-            width={120}
-            height={50}
-            style={{ verticalAlign: 'middle' }} // Basic alignment
-            />
-          Login
-        </button>
-        .
-      </p>
+        <motion.img
+          src="/logo-claro.png" // Asegúrate de tener este logo en /public y que sea preferiblemente un SVG con colores neutros
+          alt="Logo Synergy"
+          className="w-24 h-24 sm:w-28 sm:h-28 mb-6 sm:mb-8" // Ajuste de tamaño para responsividad
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100, damping: 10, delay: 0.1 }}
+        />
+
+        <motion.h1
+          className="text-4xl sm:text-5xl font-bold text-gray-800 mb-3 sm:mb-4 tracking-tight" // Font más sobria, espaciado de letras
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          ¡Bienvenido a Synergy App!
+        </motion.h1>
+
+        <motion.p
+          className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12 max-w-xl leading-relaxed" // Texto más claro, altura de línea
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          Gestiona tu información con precisión y estilo. Haz clic en el botón de abajo para comenzar tu experiencia.
+        </motion.p>
+
+        <motion.button
+          onClick={handleEnter}
+          className="bg-blue-600 text-white font-medium py-3 px-10 rounded-full text-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition ease-in-out duration-300 transform" // Botón más limpio, sin gradiente, con efecto hover
+          whileHover={{ scale: 1.05, boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)" }} // Sutil sombra en hover
+          whileTap={{ scale: 0.98 }}
+        >
+          Ingresa a Synergy Dashboard
+        </motion.button>
+      </motion.div>
     </div>
-    <div>
-          <h1>Ya tiene cuenta Ingresa aca:  </h1>
-          {session ? (
-            <div>
-              <p>Autenticado como {session.user.name}</p>
-              <button onClick={() => signOut()}>Cerrar Sesión</button>
-            </div>
-          ) : (
-            <div>
-              
-              <button onClick={() => signIn("google")}>Iniciar sesión con Google</button> <br /><br />
-              <button onClick={()=> handleLogin()}>Inicia datos de acceso</button> <br />
-              {/* Puedes añadir más botones para otros proveedores */}
-            </div>
-          )}
-        </div>
-          </div>
   );
 }
