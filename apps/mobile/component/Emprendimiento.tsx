@@ -1,6 +1,7 @@
-import { Link } from "expo-router";
-import { useState } from "react";
+import useAuthStore, { RegisterForm } from "@/stores/authStore";
+import { useRouter } from "expo-router";
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -9,53 +10,36 @@ import {
 } from "react-native";
 
 const Emprendimiento = () => {
-  interface FormData {
-    nombreEmplend: string;
-    instagram: string;
-    pagina: string;
-    actividad: string;
-    edadEmpresa: string;
-    desafio: string;
-    loading: boolean;
-    error: string;
-  }
+  const {
+    registerForm,
+    isLoading,
+    error,
+    updateRegisterForm,
+    register,
+    clearError,
+  } = useAuthStore();
+  const router = useRouter();
 
-  const [input, setInput] = useState<FormData>({
-    nombreEmplend: "",
-    instagram: "",
-    pagina: "",
-    actividad: "",
-    edadEmpresa: "",
-    desafio: "",
-    loading: false,
-    error: "",
-  });
-  const resetInputs = () => {
-    setInput({
-      nombreEmplend: "",
-      instagram: "",
-      pagina: "",
-      actividad: "",
-      edadEmpresa: "",
-      desafio: "",
-      loading: false,
-      error: "",
-    });
+  const handleRegister = async (): Promise<void> => {
+    const result = await register();
+    if (result.success) {
+      router.replace("/auth/personalidad");
+    } else {
+      Alert.alert("Register Failed", result.error || "An error occurred");
+    }
   };
 
-  const handleChange = <K extends keyof FormData>(
-    field: K,
-    value: FormData[K]
-  ) => {
-    setInput((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleInputChange = (
+    field: keyof RegisterForm,
+    value: string
+  ): void => {
+    if (error) clearError();
+    updateRegisterForm(field, value);
   };
 
   return (
     <View style={styles.container}>
-      {input.loading ? (
+      {isLoading ? (
         <View>
           <Text>...loading</Text>
         </View>
@@ -63,18 +47,16 @@ const Emprendimiento = () => {
         <>
           <Text style={styles.headerTitle}>INFORMACION</Text>
           <Text style={styles.title}>de Contacto</Text>
-          {input.error ? (
-            <Text style={{ color: "red", paddingBottom: 15 }}>
-              {input.error}
-            </Text>
+          {error ? (
+            <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
           ) : null}
           <View>
             <Text style={styles.label}>Nombre de Emprendimiento</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.nombreEmplend}
-              onChangeText={(text) => handleChange("nombreEmplend", text)}
+              value={registerForm.emprendimiento}
+              onChangeText={(text) => handleInputChange("emprendimiento", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -82,18 +64,20 @@ const Emprendimiento = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.instagram}
-              onChangeText={(text) => handleChange("instagram", text)}
+              value={registerForm.instagram}
+              onChangeText={(text) => handleInputChange("instagram", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text style={styles.label}>Pagina web</Text>
+            <Text style={styles.label}>Tamaño de la organizacion</Text>
             <TextInput
               keyboardType="numeric"
               style={styles.input}
               placeholder="Enter number"
-              value={input.pagina}
-              onChangeText={(text) => handleChange("pagina", text)}
+              value={registerForm.tamañoOrganizacion}
+              onChangeText={(text) =>
+                handleInputChange("tamañoOrganizacion", text)
+              }
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -101,8 +85,8 @@ const Emprendimiento = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.actividad}
-              onChangeText={(text) => handleChange("actividad", text)}
+              value={registerForm.actividad}
+              onChangeText={(text) => handleInputChange("actividad", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -110,8 +94,8 @@ const Emprendimiento = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.edadEmpresa}
-              onChangeText={(text) => handleChange("edadEmpresa", text)}
+              value={registerForm.edadEmpresa}
+              onChangeText={(text) => handleInputChange("edadEmpresa", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -120,16 +104,26 @@ const Emprendimiento = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.desafio}
-              onChangeText={(text) => handleChange("desafio", text)}
+              value={registerForm.desafio}
+              onChangeText={(text) => handleInputChange("desafio", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Link href="/auth/personalidad" asChild>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Siguente</Text>
-              </TouchableOpacity>
-            </Link>
+
+            <Text style={styles.desafio}>
+              ¿Como te enteraste de nuestas reuniones?
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter text"
+              value={registerForm.comoSeEntero}
+              onChangeText={(text) => handleInputChange("comoSeEntero", text)}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            <TouchableOpacity onPress={handleRegister} style={styles.button}>
+              <Text style={styles.buttonText}>Siguente</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
@@ -188,14 +182,14 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-Regular",
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#D9D9D9",
+    alignSelf: "flex-end",
+    width: 150,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    color: "white",
     fontSize: 18,
     fontWeight: "bold",
   },

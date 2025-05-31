@@ -9,15 +9,6 @@ import {
   View,
 } from "react-native";
 
-// interface FormData {
-//   nombre: string;
-//   apellido: string;
-//   whatsapp: string;
-//   correo: string;
-//   loading: boolean;
-//   error: string;
-// }
-
 const Register = () => {
   const {
     registerForm,
@@ -28,26 +19,8 @@ const Register = () => {
     clearError,
   } = useAuthStore();
 
-  // const [input, setInput] = useState<FormData>({
-  //   nombre: "",
-  //   apellido: "",
-  //   whatsapp: "",
-  //   correo: "",
-  //   loading: false,
-  //   error: "",
-  // });
-
-  // const resetInputs = () => {
-  //   setInput({
-  //     nombre: "",
-  //     apellido: "",
-  //     whatsapp: "",
-  //     correo: "",
-  //     loading: false,
-  //     error: "",
-  //   });
-  // };
   const router = useRouter();
+
   const handleRegister = async (): Promise<void> => {
     const result = await register();
     if (result.success) {
@@ -168,14 +141,14 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-Regular",
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#D9D9D9",
+    alignSelf: "flex-end",
+    width: 150,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    color: "white",
     fontSize: 18,
     fontWeight: "bold",
   },

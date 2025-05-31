@@ -18,7 +18,17 @@ interface RegisterForm {
   lastName: string;
   whatsapp: string;
   email: string;
-  password: string;
+  emprendimiento?: string;
+  instagram?: string;
+  tamañoOrganizacion?: string;
+  actividad?: string;
+  edadEmpresa?: string;
+  desafio?: string;
+  comoSeEntero?: string;
+  datoCurioso?: string;
+  pasion?: string;
+  deporte?: string;
+  // Add any other fields you need for registration
 }
 
 interface ApiResponse<T = any> {
@@ -63,7 +73,16 @@ const initialRegisterForm: RegisterForm = {
   lastName: "",
   whatsapp: "",
   email: "",
-  password: "",
+  emprendimiento: "",
+  instagram: "",
+  tamañoOrganizacion: "",
+  actividad: "",
+  edadEmpresa: "",
+  desafio: "",
+  comoSeEntero: "",
+  datoCurioso: "",
+  pasion: "",
+  deporte: "",
 };
 
 const useAuthStore = create<AuthState>()((set, get) => ({
