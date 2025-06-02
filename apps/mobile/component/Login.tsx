@@ -18,8 +18,7 @@ const Login = () => {
   const handleLogin = async (): Promise<void> => {
     const result = await login();
     if (result.success) {
-      console.log("200 OK");
-      // authAPI.login(loginForm);
+      console.log("Login successful", result.data);
     } else {
       Alert.alert("Login Failed", result.error || "An error occurred");
     }
@@ -32,8 +31,7 @@ const Login = () => {
 
   const isFormValid = (): boolean => {
     return (
-      loginForm.email.trim().length > 0
-      //&& loginForm.password.trim().length > 0
+      loginForm.email.trim().length > 0 && loginForm.password.trim().length > 0
     );
   };
 
@@ -92,6 +90,16 @@ const Login = () => {
               autoComplete="email"
               editable={!isLoading}
               testID="email-input"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={loginForm.password}
+              onChangeText={(value) => handleInputChange("password", value)}
+              autoCapitalize="none"
+              autoComplete="password"
+              editable={!isLoading}
+              testID="password-input"
             />
             <TouchableOpacity
               style={[
