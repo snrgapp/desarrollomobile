@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Synergy Match API",
+    "version": "1.0.0",
+    "description": "Documentación Swagger para autenticación con NextAuth"
+  },
+  "paths": {
+    "/auth/session": {
+      "get": {
+        "summary": "Obtener sesión actual del usuario autenticado",
+        "tags": ["Autenticación"],
+        "responses": {
+          "200": {
+            "description": "Devuelve los datos de la sesión si el usuario está autenticado",
+            "content": {
+              "application/json": {
+                "example": {
+                  "user": {
+                    "name": "Eric García",
+                    "email": "eric@example.com",
+                    "image": "https://lh3.googleusercontent.com/...",
+                    "id": "662c8cde64a645b13077a123"
+                  },
+                  "expires": "2025-08-19T12:34:56.789Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autenticado o sesión expirada"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "summary": "Iniciar sesión con Google (OAuth)",
+        "tags": ["Autenticación"],
+        "description": "Redirige a la página de inicio de sesión con el proveedor configurado (Google)",
+        "responses": {
+          "302": {
+            "description": "Redirección al proveedor de autenticación (Google)"
+          }
+        }
+      }
+    },
+    "/auth/signout": {
+      "post": {
+        "summary": "Cerrar sesión",
+        "tags": ["Autenticación"],
+        "description": "Finaliza la sesión actual del usuario",
+        "responses": {
+          "302": {
+            "description": "Redirección tras cerrar sesión"
+          }
+        }
+      }
+    },
+    "/auth/providers": {
+      "get": {
+        "summary": "Obtener proveedores de autenticación",
+        "tags": ["Autenticación"],
+        "responses": {
+          "200": {
+            "description": "Lista de proveedores habilitados (Google, GitHub, etc.)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "google": {
+                    "id": "google",
+                    "name": "Google",
+                    "type": "oauth",
+                    "signinUrl": "http://localhost:3000/api/auth/signin/google",
+                    "callbackUrl": "http://localhost:3000/api/auth/callback/google"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

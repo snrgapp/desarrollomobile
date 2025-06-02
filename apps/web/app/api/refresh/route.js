@@ -19,7 +19,7 @@ export async function GET() {
         const accessToken = jwt.sign({
             id: decoded.id,
             email: decoded.email,
-            name: decoded.name
+            name: decoded.name,
         }, apiSecret, { expiresIn: '15m' });
 
         return Response.json({ accessToken });
