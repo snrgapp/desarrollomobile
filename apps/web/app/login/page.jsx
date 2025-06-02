@@ -25,7 +25,7 @@ export default function LoginPage() {
       localStorage.setItem("apiToken", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      Swal.fire("Bienvenido", `Hola ${user.name}`, "success");
+      //Swal.fire("Bienvenido", `Hola ${user.name}`, "success");
       router.push("/dashboard");
     } catch (err) {
       console.error("Error de login:", err);
@@ -33,6 +33,8 @@ export default function LoginPage() {
     }
   };
   
+  // Manejara el registro de usuarios correo e email y contraseña y proceso de creacion de cuenta
+  // Este método se encargará de registrar un nuevo usuario
   const handleRegister = async () => {
     try {
       const res = await axios.post("/api/register", { email, password });
@@ -46,12 +48,12 @@ export default function LoginPage() {
     }
   };
 
-  // // Redirige si el usuario está autenticado con NextAuth
-  // useEffect(() => {
-  //   if (status === "authenticated") {
-  //     router.push("/homeuser");
-  //   }
-  // }, [status, router]);
+  // Redirige si el usuario está autenticado con NextAuth
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/swagger");
+    }
+  }, [status, router]);
   
   if (status === "loading") return <p>Cargando sesión...</p>;
 

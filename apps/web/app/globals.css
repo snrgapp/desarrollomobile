@@ -1,42 +1,5 @@
-/* globals.css */
 
-/* Estas directivas de Tailwind son cruciales.
- * @tailwind base; incluye el "Preflight" de Tailwind, que es su propio
- * reset CSS. Esto ya incluye `box-sizing: border-box;` y elimina
- * la mayoría de los márgenes/paddings por defecto de los navegadores.
- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- Reglas adicionales mínimas que son buenas prácticas --- */
-
-html,
-body {
-  /* Previene el scroll horizontal no deseado */
-  max-width: 100vw;
-  overflow-x: hidden;
-  
-  /* Mejora el renderizado de la fuente en diferentes sistemas operativos */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  /* Hace que los enlaces hereden el color de su padre y no tengan subrayado por defecto */
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Informa al navegador que tu sitio soporta modo oscuro para elementos nativos */
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
-/*
- * Puedes eliminar cualquier otra cosa de este archivo.
- * Si necesitas estilos globales muy específicos que no puedas manejar con Tailwind,
- * puedes añadirlos aquí, pero la idea es minimizarlos.
- */
