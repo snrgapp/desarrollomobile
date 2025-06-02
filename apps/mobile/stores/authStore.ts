@@ -1,71 +1,16 @@
 // stores/authStore.ts
+import { authAPI } from "@/service/api";
+import {
+  ApiResponse,
+  AuthState,
+  LoginForm,
+  RegisterForm,
+  User,
+} from "@/types/auth";
 import { create } from "zustand";
-
-// Types
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
-
-interface RegisterForm {
-  name: string;
-  lastName: string;
-  whatsapp: string;
-  email: string;
-  emprendimiento?: string;
-  instagram?: string;
-  tamañoOrganizacion?: string;
-  actividad?: string;
-  edadEmpresa?: string;
-  desafio?: string;
-  comoSeEntero?: string;
-  datoCurioso?: string;
-  pasion?: string;
-  deporte?: string;
-  // Add any other fields you need for registration
-}
-
-interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
-interface AuthState {
-  // Auth state
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
-
-  // Form data
-  loginForm: LoginForm;
-  registerForm: RegisterForm;
-
-  // Form actions
-  updateLoginForm: (field: keyof LoginForm, value: string) => void;
-  updateRegisterForm: (field: keyof RegisterForm, value: string) => void;
-  resetLoginForm: () => void;
-  resetRegisterForm: () => void;
-
-  // Auth actions
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
-  clearError: () => void;
-  login: () => Promise<ApiResponse>;
-  register: () => Promise<ApiResponse>;
-  logout: () => void;
-}
 
 const initialLoginForm: LoginForm = {
   email: "",
-  password: "",
 };
 
 const initialRegisterForm: RegisterForm = {
@@ -133,6 +78,9 @@ const useAuthStore = create<AuthState>()((set, get) => ({
     set({ isLoading: true, error: null });
 
     try {
+      const respose = authAPI.login(get().loginForm);
+      console.log("respose", respose);
+
       // const response = await fetch("https://your-api.com/auth/login", {
       //   method: "POST",
       //   headers: {
@@ -154,7 +102,6 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         },
         token: "your-token",
       };
-      // await response.json();
 
       set({
         user: data.user,

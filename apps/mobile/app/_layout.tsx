@@ -8,7 +8,7 @@ export default function RootLayout() {
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <StatusBar hidden={true} />
         <Stack>
-          <Stack.Screen name="auth" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack>
       </SafeAreaView>
     </SafeAreaProvider>

@@ -1,14 +1,26 @@
-import Register from "@/component/Register";
-import { Link } from "expo-router";
+import Login from "@/component/Login";
+import useAuthStore from "@/stores/authStore";
+import { Link, router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function RegisterScreen() {
+export default function LoginScreen() {
+  const goToRegister = (): void => {
+    router.push("/register");
+  };
+  const { isLoading } = useAuthStore();
+
   return (
     <View style={styles.container}>
-      <Register />
-      <Link href="/auth/login" asChild replace>
+      <Login />
+      <Link href="/register" asChild replace>
         <TouchableOpacity style={styles.linkButton}>
-          <Text style={styles.linkText}>Already have an account? Login</Text>
+          <Text
+            style={styles.linkText}
+            onPress={goToRegister}
+            disabled={isLoading}
+          >
+            Don&apos;t have an account? Register
+          </Text>
         </TouchableOpacity>
       </Link>
     </View>
@@ -23,11 +35,6 @@ const styles = StyleSheet.create({
     padding: 20,
     width: "100%",
     backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
   button: {
     backgroundColor: "#007BFF",

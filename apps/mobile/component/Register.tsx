@@ -24,8 +24,7 @@ const Register = () => {
   const handleRegister = async (): Promise<void> => {
     const result = await register();
     if (result.success) {
-      console.log("Register result:", result);
-      router.replace("/auth/emprendimiento");
+      router.replace("/emprendimiento");
     } else {
       Alert.alert("Register Failed", result.error || "An error occurred");
     }

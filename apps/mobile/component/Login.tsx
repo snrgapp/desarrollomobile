@@ -18,7 +18,8 @@ const Login = () => {
   const handleLogin = async (): Promise<void> => {
     const result = await login();
     if (result.success) {
-      console.log("Login result:", result);
+      console.log("200 OK");
+      // authAPI.login(loginForm);
     } else {
       Alert.alert("Login Failed", result.error || "An error occurred");
     }
@@ -31,7 +32,8 @@ const Login = () => {
 
   const isFormValid = (): boolean => {
     return (
-      loginForm.email.trim().length > 0 && loginForm.password.trim().length > 0
+      loginForm.email.trim().length > 0
+      //&& loginForm.password.trim().length > 0
     );
   };
 

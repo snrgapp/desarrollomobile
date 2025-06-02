@@ -23,7 +23,7 @@ const Emprendimiento = () => {
   const handleRegister = async (): Promise<void> => {
     const result = await register();
     if (result.success) {
-      router.replace("/auth/personalidad");
+      router.replace("/personalidad");
     } else {
       Alert.alert("Register Failed", result.error || "An error occurred");
     }
