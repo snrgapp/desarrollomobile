@@ -27,6 +27,15 @@ export async function POST(req) {
 
     const requiredFields = ["name", "lastname", "email", "phone", "password"];
     const missingField = requiredFields.find((field) => !body[field]);
+    const requiredFields = [
+      "name",
+      "lastname",
+      "email",
+      "phone",
+      "password",
+      "source",
+    ];
+    const missingField = requiredFields.find((field) => !body[field]);
 
     if (missingField) {
       return NextResponse.json(
@@ -44,10 +53,19 @@ export async function POST(req) {
       );
     }
     // ✅ Encripta la contraseña antes de guardarla
+
+    // ✅ Encripta la contraseña antes de guardarla
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(body.password, saltRounds);
 
     const userNumber = await usernumber(); // Genera un nuevo userNumber
+
+    //validamos si el usuario fue registrado por app o por web para determinar si es usuario o admin
+    if (body.source === "mobile") {
+      body.typeofuser = "user"; // Usuario normal
+    } else if (body.source === "web") {
+      body.typeofuser = "admin"; // Admin
+    }
 
     // ✅ Crea el nuevo usuario
     const newBody = {
@@ -56,6 +74,7 @@ export async function POST(req) {
       userNumber: userNumber,
     };
     const newUser = await UserModel.create(newBody);
+
     // Aquí puedes agregar lógica adicional si es necesario, como enviar un correo de bienvenida
 
     // ✅ Respuesta exitosa

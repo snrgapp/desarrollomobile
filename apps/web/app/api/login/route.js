@@ -43,6 +43,8 @@ export async function POST(req) {
         id: user._id,
         email: user.email,
         name: user.name,
+        lastname:  user.lastname,
+        isAdmin: user.typeofuser 
       },
       apiSecret,
       { expiresIn: "1d" } // puedes ajustar el tiempo de expiración
@@ -55,6 +57,8 @@ export async function POST(req) {
         id: user._id,
         name: user.name,
         email: user.email,
+        lastname:  user.lastname,
+        isAdmin: user.typeofuser 
       },
     });
   } catch (err) {
