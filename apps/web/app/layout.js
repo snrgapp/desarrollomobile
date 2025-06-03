@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./globals.css"; // Asegúrate de que la ruta sea correcta
 
 // apps/web/app/layout.js
 import { SessionProvider } from 'next-auth/react';

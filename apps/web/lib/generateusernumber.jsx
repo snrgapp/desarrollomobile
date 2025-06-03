@@ -13,11 +13,9 @@ export async function usernumber (){
             // Ordenamos por userNumber de forma descendente (-1) y limitamos a 1
             const lastUser = await UserModel.findOne().sort({ userNumber: -1 }).limit(1);
     
-            if (lastUser) {
-                // Si hay un último usuario, incrementa su userNumber
-                nextUserNumber = lastUser.userNumber + 1;
+            if (lastUser && lastUser.userNumber && !isNaN(lastUser.userNumber)) {
+                nextUserNumber = parseInt(lastUser.userNumber) + 1;
             } else {
-                // Si la colección está vacía, el primer userNumber es 100001
                 nextUserNumber = 100001;
             }
 

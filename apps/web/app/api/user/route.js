@@ -13,69 +13,70 @@ import { usernumber } from "@/lib/generateusernumber";
 
 //METODO POST api/user Crear un nuevo usuario
 export async function POST(req) {
-  // const { error, decodedToken } = await verifyApiToken(req);
-
-  //   if (error) {
-  //       return NextResponse.json({ message: 'Unauthorized', error }, { status: 401 });
-  //   }
-    try {
-    // ✅ Conexión a la base de datos primero
+  try {
+    // Conexion a la base de datos
     await dbConnect();
-
-    // ✅ Extrae y valida el body
+    // Verifica el body 
     const body = await req.json();
-    console.log("llega por Body", body);
+    console.log("📥 Body recibido:", body);
 
-    // ✅ Verifica que el body tenga los campos requeridos
+    // 🕵️‍♂️ Verificar el origen del usuario
+    const isWeb = body.source === 'web';
 
-    const requiredFields = ['name', 'lastname', 'email', 'phone', 'password', 'source'];
+    body.typeofuser = isWeb ? 'admin' : 'user';
+
+    // 🧪 Validar campos requeridos
+    const requiredFields = isWeb
+      ? ['email', 'password', 'source']
+      : ['name', 'lastname', 'email', 'phone', 'password', 'source'];
+
+    // Verificar si faltan campos requeridos
     const missingField = requiredFields.find(field => !body[field]);
-
     if (missingField) {
       return NextResponse.json({ error: `Falta el campo: ${missingField}` }, { status: 400 });
     }
 
-     
-    // ✅ Verifica si ya existe un usuario con ese email
-    const existingUser = await UserModel.findOne({ email: body.email });
-    if (existingUser) {
-      return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
+    // 🛑 Verificar duplicados
+    if (isWeb) {
+      const existingUser = await UserModel.findOne({
+        $or: [{ email: body.email }, { typeofuser: 'admin' }]
+      });
+
+      if (existingUser) {
+        if (existingUser.email === body.email) {
+          return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
+        }
+        if (existingUser.typeofuser === 'admin') {
+          return NextResponse.json({ error: "Ya existe un Administrador creado" }, { status: 400 });
+        }
+      }
+    } else {
+      const existingUser = await UserModel.findOne({ email: body.email });
+      if (existingUser) {
+        return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
+      }
     }
 
-    // ✅ Encripta la contraseña antes de guardarla
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+    // 🔐 Encriptar contraseña y crear usuario
+    const hashedPassword = await bcrypt.hash(body.password, 10);
 
+    // Generar un número de usuario único
+    const newUser = await UserModel.create({
+      ...body,
+      password: hashedPassword,
+      userNumber: await usernumber(),
+    });
 
-    const userNumber = await usernumber(); // Genera un nuevo userNumber
-    
-    //validamos si el usuario fue registrado por app o por web para determinar si es usuario o admin
-    if (body.source === 'mobile' ) {
-      body.typeofuser = 'user'; // Usuario normal
-    }else if (body.source === 'web') {
-      body.typeofuser = 'admin'; // Admin
-    }
-
-    // ✅ Crea el nuevo usuario
-    const newBody = {
-        ...body, 
-        password: hashedPassword,
-        userNumber : userNumber
-    }
-    const newUser = await UserModel.create(newBody);
-
-    // Aquí puedes agregar lógica adicional si es necesario, como enviar un correo de bienvenida
-
-    // ✅ Respuesta exitosa
-    // Elimina el campo password antes de enviar la respuesta
+    // Eliminar el campo de contraseña del objeto de usuario antes de enviarlo
+    // Esto es importante para no exponer la contraseña en la respuesta
     const { password, ...userWithoutPassword } = newUser._doc;
+    console.log("✅ Usuario creado:", userWithoutPassword);
 
-    console.log("Usuario creado", userWithoutPassword);
-
+    // Respuesta exitosa
     return NextResponse.json({ message: "Usuario creado", user: userWithoutPassword }, { status: 201 });
 
   } catch (error) {
-    console.error("Error al crear el usuario", error);
+    console.error("❌ Error al crear el usuario:", error);
     return NextResponse.json({ error: "Error interno al crear el usuario" }, { status: 500 });
   }
 }
