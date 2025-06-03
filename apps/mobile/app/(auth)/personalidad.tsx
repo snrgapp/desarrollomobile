@@ -1,25 +1,22 @@
 import Personalidad from "@/component/Personalidad";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function RegisterScreen() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
-        <View style={styles.container}>
-          <Personalidad />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Personalidad />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
     padding: 20,
     justifyContent: "center",
-    backgroundColor: "#fff",
     width: "100%",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,

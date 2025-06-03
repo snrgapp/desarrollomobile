@@ -1,16 +1,13 @@
 import Emprendimiento from "@/component/Emprendimiento";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
-        <View style={styles.container}>
-          <Emprendimiento />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView>
+      <View style={styles.container}>
+        <Emprendimiento />
+      </View>
+    </ScrollView>
   );
 }
 
