@@ -15,8 +15,8 @@ export async function GET(req) {
 
   console.log("Authenticated user ID (from JWT):", decodedToken.id);
 
-  if (!decodedToken.isAdmin) {
-    return NextResponse.json({ error: "Acceso restringido a administradores" }, { status: 403 });
+  if (!decodedToken.isAdmin && decodedToken.typeofuser !== 'admin') {
+    return NextResponse.json({ error: "Acceso solo administradores" }, { status: 403 });
   }
 
   try {

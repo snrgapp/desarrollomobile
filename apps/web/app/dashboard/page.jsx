@@ -7,6 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useRouter } from "next/navigation";
 import { FaUsers, FaClock, FaCalendarAlt, FaHeart, FaSignOutAlt, FaChartLine, FaChartBar, FaSearch } from 'react-icons/fa';
 import { IoStatsChart } from "react-icons/io5";
+import Swal from 'sweetalert2';
 
 // --- Funciones de Utilidad (sin cambios) ---
 function parseJwt(token) {
@@ -159,7 +160,12 @@ useEffect(() => {
       setStats(res.data);
       console.log("✅ Información para el dashboard:", res.data);
     } catch (error) {
-      console.error("Error al llamar /api/admin", error);
+      Swal.fire({
+            title: "Revisa tus credenciales",
+            text: error.response?.data?.error || "Sin acceso Modulo de solo para Administradores",
+            icon: "error",
+            confirmButtonColor: "#d33",
+          });
       if (error.response) {
         if (error.response.status === 401) {
           alert("Token inválido o expirado. Inicia sesión nuevamente.");
@@ -179,6 +185,8 @@ useEffect(() => {
     }
   };
 
+  // funcion para manejar el cierre de sesion si esta registrado con google pero es usuario donde lo redirijo a /login
+  
   // ✅ AQUÍ ESTÁ EL CAMBIO CLAVE:
   // El useEffect solo se dispara cuando apiToken, dateRange o userType cambian.
   // La condición `!loadingStats` se asegura de que solo se inicie la llamada
@@ -186,14 +194,14 @@ useEffect(() => {
   if (apiToken) { // Solo si tenemos un apiToken
     fetchDashboardStats();
   }
-
+  
 }, [apiToken, dateRange, userType, router]); // ✅ ¡loadingStats HA SIDO ELIMINADO DE LAS DEPENDENCIAS!
 
 
-  // Manejo de estados de carga y error
-  if (status === "loading" || loadingToken) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+// Manejo de estados de carga y error
+if (status === "loading" || loadingToken) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
           <IoStatsChart className="animate-spin text-blue-500 text-6xl mb-4" />
           <p className="text-gray-600 dark:text-gray-400 text-lg">Cargando dashboard...</p>
@@ -201,18 +209,25 @@ useEffect(() => {
       </div>
     );
   }
+  
+  
+  const handlesesinout = () => {
+    localStorage.removeItem("apiToken");
+    localStorage.removeItem("user");
+    signOut({ callbackUrl: "/login" });
+  }
 
   if (statsError) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-red-50">
         <div className="text-center p-6 rounded-lg bg-white shadow-lg">
-          <p className="text-red-700 text-xl font-semibold mb-4">Error al cargar el dashboard:</p>
-          <p className="text-gray-700">{statsError}</p>
+          <p className="text-red-700 text-xl font-semibold mb-4">Información solo para Administradores </p>
+          {/* <p className="text-gray-700">{statsError}</p> */}
           <button
-            onClick={() => window.location.reload()}
+           onClick={() => handlesesinout()}
             className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            Reintentar
+            Ingresar como Administrador
           </button>
         </div>
       </div>
@@ -233,7 +248,7 @@ useEffect(() => {
   if (!stats) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
-        <p className="text-gray-600 dark:text-gray-400 text-lg">No se pudo cargar el dashboard. Intenta de nuevo más tarde.</p>
+        <p className="text-gray-600 dark:text-gray-400 text-lg">Ingresa con tus credenciales de Administrador para ver la Información.</p>
       </div>
     );
   }
@@ -258,11 +273,7 @@ useEffect(() => {
             <p className="text-gray-500 dark:text-gray-400 text-md">Dashboard de Administración de Synergy App</p>
           </div>
           <button
-            onClick={() => {
-              localStorage.removeItem("apiToken");
-              localStorage.removeItem("user");
-              signOut({ callbackUrl: "/" });
-            }}
+            onClick={() => handlesesinout()}
             className="mt-4 sm:mt-0 inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 text-sm"
           >
             <FaSignOutAlt className="mr-2 text-lg" />
