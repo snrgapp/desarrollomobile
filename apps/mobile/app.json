@@ -53,6 +53,7 @@
         {
           "fonts": ["./assets/fonts/Montserrat-Regutar.ttf"],
           "android": {
+            "usesCleartextTraffic": true,
             "fonts": [
               {
                 "fontFamily": "Montserrat",

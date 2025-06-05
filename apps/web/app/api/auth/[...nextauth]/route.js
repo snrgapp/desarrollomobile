@@ -26,37 +26,46 @@ export const authOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        // Cuando es el primer login, el usuario ya existe en la BD (por el adapter),
-        // entonces aquí solo asignamos el tipo según la BD.
+  async jwt({ token, user }) {
+    const client = await clientPromise;
+    const db = client.db();
+    const usersCollection = db.collection('users');
 
-        const client = await clientPromise;
-        const db = client.db();
-        const usersCollection = db.collection('users');
+    // Solo en el primer login, guardar el ID
+    if (user) {
+      token.email = user.email; // Necesario si no está en el token
+    }
 
-        const existingUser = await usersCollection.findOne({ email: user.email });
+    if (token.email) {
+      const existingUser = await usersCollection.findOne({ email: token.email });
 
-        if (existingUser) {
-          token.typeofuser = existingUser.typeofuser || 'user';
-          token.id = existingUser._id.toString();
-          token.isAdmin = ['admin', 'superadmin'].includes(token.typeofuser);
-        } else {
-          // Si por alguna razón no existe, por seguridad asignar user
-          token.typeofuser = 'user';
-          token.isAdmin = false;
-        }
+      if (existingUser) {
+
+        // Actualizar la fecha de último inicio de sesión
+        await usersCollection.updateOne(
+          { email: token.email },
+          { $set: { lastLogin: new Date() } }
+        );
+
+        token.typeofuser = existingUser.typeofuser || 'user';
+        token.id = existingUser._id.toString();
+        token.isAdmin = ['admin', 'superadmin'].includes(token.typeofuser);
+      } else {
+        token.typeofuser = 'user';
+        token.isAdmin = false;
       }
-      return token;
-    },
+    }
 
-    async session({ session, token }) {
-      if (token?.id) session.user.id = token.id;
-      if (token?.isAdmin !== undefined) session.user.isAdmin = token.isAdmin;
-      if (token?.typeofuser) session.user.typeofuser = token.typeofuser;
-      return session;
-    },
+    return token;
   },
+
+  async session({ session, token }) {
+    session.user.id = token.id;
+    session.user.typeofuser = token.typeofuser;
+    session.user.isAdmin = token.isAdmin;
+    return session;
+  },
+},
 
   events: {
     async createUser({ user,req }) {
@@ -112,6 +121,7 @@ export const authOptions = {
               source: source,
               createdAt: new Date(),
               updatedAt: new Date(),
+              lastLogin: new Date()
             },
           }
         );

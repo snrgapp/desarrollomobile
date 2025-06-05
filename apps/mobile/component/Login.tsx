@@ -1,49 +1,24 @@
+import type { LoginForm } from "@/stores/authStore";
 import useAuthStore from "@/stores/authStore";
+import { Image } from "expo-image";
 import {
+  ActivityIndicator,
+  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  Alert,
-  ActivityIndicator,
 } from "react-native";
-import type { LoginForm } from "@/stores/authStore";
 
 const Login = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-  // const [loading, setLoading] = useState(false);
-
-  // const handleLogin = () => {
-  //   setLoading(true);
-  //   setError("");
-  //   if (!email || !password) {
-  //     setError("Por favor, completa todos los campos");
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     // Aquí iría la lógica de autenticación
-  //     console.log("Email:", email);
-  //     console.log("Password:", password);
-  //     setEmail("");
-  //     setPassword("");
-  //     setError("");
-  //   } catch (err) {
-  //     setError("Error al iniciar sesión");
-  //   }
-  // };
   const { loginForm, isLoading, error, updateLoginForm, login, clearError } =
     useAuthStore();
 
   const handleLogin = async (): Promise<void> => {
     const result = await login();
-
     if (result.success) {
-      console.log(result);
+      console.log("Login successful", result.data);
     } else {
       Alert.alert("Login Failed", result.error || "An error occurred");
     }
@@ -75,6 +50,36 @@ const Login = () => {
             <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
           ) : null}
           <View>
+            <TouchableOpacity
+              style={[
+                styles.googleButton,
+                (!isFormValid() || isLoading) && styles.buttonDisabled,
+              ]}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <View
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    style={styles.googleLogo}
+                    source={require("../assets/images/google-logo.png")}
+                  />
+                  <Text style={styles.googleLabel}>Log in with Google</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <View style={styles.lineContainer}>
+              <View style={styles.line} />
+              <Text style={styles.text}>Or use you email</Text>
+              <View style={styles.line} />
+            </View>
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -86,19 +91,16 @@ const Login = () => {
               editable={!isLoading}
               testID="email-input"
             />
-
             <TextInput
               style={styles.input}
               placeholder="Password"
               value={loginForm.password}
               onChangeText={(value) => handleInputChange("password", value)}
-              secureTextEntry
+              autoCapitalize="none"
               autoComplete="password"
               editable={!isLoading}
               testID="password-input"
-              autoCapitalize="none"
             />
-
             <TouchableOpacity
               style={[
                 styles.button,
@@ -163,6 +165,54 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
     fontFamily: "Montserrat-Regular",
   },
+
+  googleButton: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginBottom: 20,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  googleLogo: {
+    width: 20,
+    height: 20,
+    marginRight: 20,
+  },
+  googleLabel: {
+    fontSize: 14,
+    fontWeight: "600",
+  },
+
+  lineContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E0E0E0",
+  },
+  text: {
+    marginHorizontal: 15,
+    fontSize: 14,
+    color: "#888",
+    fontWeight: "400",
+  },
+
   button: {
     backgroundColor: "#007BFF",
     paddingVertical: 10,

@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   password:     { type: String, required: [true, "Please enter a password"] },
   typeofuser:  { type: String,}, // Tipo de usuario, por defecto es "user" // Admin
   source: { type: String, enum: ['web', 'mobile'], default: 'web' },
-   lastLogin: Date, // Fecha del último inicio de sesión
+  lastLogin: Date, // Fecha del último inicio de sesión
   hasMatch: { type: Boolean, default: false },
 },  { timestamps: true });
 
