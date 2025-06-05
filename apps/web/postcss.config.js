@@ -1,10 +1,7 @@
-const { plugins } = require("./tailwind.config");
-
 // apps/web/postcss.config.js
 module.exports = {
     plugins: {
-
-        '@tailwindcss/postcss': {},
+        tailwindcss: {}, // Esto es correcto para v3 y v4
         autoprefixer: {},
     }
 };

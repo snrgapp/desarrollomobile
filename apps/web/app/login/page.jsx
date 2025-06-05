@@ -56,7 +56,9 @@ export default function LoginPage() {
   // Verifica si quiere registrarse como admin
   if (userType === "admin") {
     // Cargar la clave del entorno
-    const expectedAdminKey = process.env.ADMIN_REGISTRATION_SECRET;
+    const expectedAdminKey = process.env.NEXT_PUBLIC_ADMIN_REGISTRATION_SECRET;
+    console.log("expectedAdminKey:", expectedAdminKey);
+    console.log("adminSecret:", adminSecret);
 
     if (adminSecret !== expectedAdminKey) {
       return Swal.fire({
@@ -68,6 +70,17 @@ export default function LoginPage() {
     }
   }
 
+  //Limpia los campos del formulario después de enviar
+    const resetForm = () => {
+      setName("");
+      setLastname("");
+      setPhone("");
+      setEmail("");
+      setPassword("");
+      setAdminSecret("");
+      setUserType("user");
+    };
+
   try {
     const res = await axios.post("/api/user", {
       name,
@@ -75,7 +88,7 @@ export default function LoginPage() {
       phone,
       email,
       password,
-      role: userType, // envías 'admin' o 'user'
+      typeofuser: userType, // envías 'admin' o 'user'
       source: "web",
     });
 
@@ -85,7 +98,8 @@ export default function LoginPage() {
       icon: "success",
       confirmButtonText: "Continuar",
     }).then(() => {
-      router.push("/login");
+        setIsRegistering(false);
+        resetForm();
     });
   } catch (err) {
     Swal.fire({

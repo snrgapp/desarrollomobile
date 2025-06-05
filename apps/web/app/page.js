@@ -34,6 +34,7 @@ export default function WelcomePage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-gray-900 px-6 py-12">
       {/* Contenedor principal con un fondo claro y texto oscuro */}
+
       
       <motion.div
         className="flex flex-col items-center justify-center bg-white p-8 sm:p-12 rounded-3xl shadow-xl max-w-2xl w-full text-center"
@@ -67,7 +68,8 @@ export default function WelcomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          Gestiona tu información con precisión y estilo. Haz clic en el botón de abajo para comenzar tu experiencia.
+          Gestiona tu información con precisión y estilo. <br />
+          Haz clic en el botón de abajo para comenzar tu experiencia.
         </motion.p>
 
         <motion.button

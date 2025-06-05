@@ -1,6 +1,7 @@
-import { Link } from "expo-router";
-import { useState } from "react";
+import useAuthStore, { RegisterForm } from "@/stores/authStore";
+import { useRouter } from "expo-router";
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -8,60 +9,38 @@ import {
   View,
 } from "react-native";
 
-interface FormData {
-  nombre: string;
-  apellido: string;
-  whatsapp: string;
-  correo: string;
-  loading: boolean;
-  error: string;
-}
-
 const Register = () => {
-  const [input, setInput] = useState<FormData>({
-    nombre: "",
-    apellido: "",
-    whatsapp: "",
-    correo: "",
-    loading: false,
-    error: "",
-  });
+  const {
+    registerForm,
+    isLoading,
+    error,
+    updateRegisterForm,
+    register,
+    clearError,
+  } = useAuthStore();
 
-  const resetInputs = () => {
-    setInput({
-      nombre: "",
-      apellido: "",
-      whatsapp: "",
-      correo: "",
-      loading: false,
-      error: "",
-    });
-  };
-  const handleLogin = () => {
-    setInput({ ...input, loading: true });
-    setInput({ ...input, error: "" });
+  const router = useRouter();
 
-    try {
-      console.log("Data:", input);
-      resetInputs();
-    } catch (err) {
-      setInput({ ...input, error: "Error al iniciar sesión" });
+  const handleRegister = async (): Promise<void> => {
+    const result = await register();
+    if (result.success) {
+      router.replace("/emprendimiento");
+    } else {
+      Alert.alert("Register Failed", result.error || "An error occurred");
     }
   };
 
-  const handleChange = <K extends keyof FormData>(
-    field: K,
-    value: FormData[K]
-  ) => {
-    setInput((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleInputChange = (
+    field: keyof RegisterForm,
+    value: string
+  ): void => {
+    if (error) clearError();
+    updateRegisterForm(field, value);
   };
 
   return (
     <View style={styles.container}>
-      {input.loading ? (
+      {isLoading ? (
         <View>
           <Text>...loading</Text>
         </View>
@@ -69,18 +48,16 @@ const Register = () => {
         <>
           <Text style={styles.headerTitle}>INFORMACION</Text>
           <Text style={styles.title}>de Contacto</Text>
-          {input.error ? (
-            <Text style={{ color: "red", paddingBottom: 15 }}>
-              {input.error}
-            </Text>
+          {error ? (
+            <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
           ) : null}
           <View>
             <Text style={styles.label}>Nombre</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.nombre}
-              onChangeText={(text) => handleChange("nombre", text)}
+              value={registerForm.name}
+              onChangeText={(text) => handleInputChange("name", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -88,8 +65,8 @@ const Register = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.apellido}
-              onChangeText={(text) => handleChange("apellido", text)}
+              value={registerForm.lastName}
+              onChangeText={(text) => handleInputChange("lastName", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -98,8 +75,8 @@ const Register = () => {
               keyboardType="numeric"
               style={styles.input}
               placeholder="Enter number"
-              value={input.whatsapp}
-              onChangeText={(text) => handleChange("whatsapp", text)}
+              value={registerForm.whatsapp}
+              onChangeText={(text) => handleInputChange("whatsapp", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -107,16 +84,15 @@ const Register = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter text"
-              value={input.correo}
-              onChangeText={(text) => handleChange("correo", text)}
+              value={registerForm.email}
+              onChangeText={(text) => handleInputChange("email", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Link href="/auth/emprendimiento" asChild>
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Siguente</Text>
-              </TouchableOpacity>
-            </Link>
+
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Siguente</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
@@ -128,6 +104,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    width: "100%",
     justifyContent: "center",
     backgroundColor: "#fff",
   },
@@ -163,14 +140,14 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-Regular",
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#D9D9D9",
+    alignSelf: "flex-end",
+    width: 150,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    color: "white",
     fontSize: 18,
     fontWeight: "bold",
   },
