@@ -21,6 +21,10 @@ const Personalidad = () => {
   const handleRegister = async (): Promise<void> => {
     const result = await register();
     if (result.success) {
+      Alert.alert("Registro Exitoso", "Tu registro ha sido completado.");
+      // Optionally, navigate to another screen or reset the form
+      // router.replace("/home");
+      // resetRegisterForm();
       console.log("Register result:", result);
     } else {
       Alert.alert("Register Failed", result.error || "An error occurred");
@@ -53,30 +57,25 @@ const Personalidad = () => {
             <Text style={styles.label}>Un dato curioso tuyo</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.datoCurioso}
               onChangeText={(text) => handleInputChange("datoCurioso", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-            <Text style={styles.label}>Pasion</Text>
+            <Text style={styles.label}>¿Que cosas te apasionan?</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.pasion}
               onChangeText={(text) => handleInputChange("pasion", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-            <Text style={styles.label}>Pagina web</Text>
+            <Text style={styles.label}>
+              ¿Practicas algun deporte o actividad?
+            </Text>
             <TextInput
-              keyboardType="numeric"
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.deporte}
               onChangeText={(text) => handleInputChange("deporte", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
           </View>
           <View>

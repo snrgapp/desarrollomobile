@@ -1,7 +1,6 @@
 import useAuthStore, { RegisterForm } from "@/stores/authStore";
 import { useRouter } from "expo-router";
 import {
-  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -22,12 +21,7 @@ const Register = () => {
   const router = useRouter();
 
   const handleRegister = async (): Promise<void> => {
-    const result = await register();
-    if (result.success) {
-      router.replace("/emprendimiento");
-    } else {
-      Alert.alert("Register Failed", result.error || "An error occurred");
-    }
+    router.replace("/emprendimiento");
   };
 
   const handleInputChange = (
@@ -55,20 +49,16 @@ const Register = () => {
             <Text style={styles.label}>Nombre</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.name}
               onChangeText={(text) => handleInputChange("name", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
             <Text style={styles.label}>Apellido</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.lastName}
               onChangeText={(text) => handleInputChange("lastName", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
             <Text style={styles.label}>Whatsapp</Text>
             <TextInput
@@ -82,8 +72,9 @@ const Register = () => {
             />
             <Text style={styles.label}>Correo</Text>
             <TextInput
+              keyboardType="email-address"
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.email}
               onChangeText={(text) => handleInputChange("email", text)}
               autoCapitalize="none"

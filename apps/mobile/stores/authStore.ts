@@ -15,20 +15,34 @@ const initialLoginForm: LoginForm = {
 };
 
 const initialRegisterForm: RegisterForm = {
-  name: "",
-  lastName: "",
-  whatsapp: "",
-  email: "",
-  emprendimiento: "",
-  instagram: "",
-  tamañoOrganizacion: "",
-  actividad: "",
-  edadEmpresa: "",
-  desafio: "",
-  comoSeEntero: "",
-  datoCurioso: "",
-  pasion: "",
-  deporte: "",
+  // name: "",
+  // lastName: "",
+  // whatsapp: "",
+  // email: "",
+  // emprendimiento: "",
+  // instagram: "",
+  // tamañoOrganizacion: undefined,
+  // actividad: undefined,
+  // edadEmpresa: undefined,
+  // desafio: "",
+  // comoSeEntero: undefined,
+  // datoCurioso: "",
+  // pasion: "",
+  // deporte: "",
+  actividad: "Comercio",
+  comoSeEntero: "Amigo",
+  datoCurioso: "Qwer",
+  deporte: "Wwer",
+  desafio: "Qwer",
+  edadEmpresa: "6 meses",
+  email: "adibraed1@gmail.com",
+  emprendimiento: "Qwe",
+  instagram: "qwe",
+  lastName: "Raed",
+  name: "Adib",
+  pasion: "Qwer",
+  tamañoOrganizacion: "1-3",
+  whatsapp: "1234",
 };
 
 const useAuthStore = create<AuthState>()((set, get) => ({
@@ -109,44 +123,14 @@ const useAuthStore = create<AuthState>()((set, get) => ({
 
   // Register action
   register: async (): Promise<ApiResponse> => {
-    const { registerForm } = get();
-
-    // if (registerForm.password.length < 6) {
-    //   const errorMessage = "Password must be at least 6 characters";
-    //   set({ error: errorMessage });
-    //   return { success: false, error: errorMessage };
-    // }
-
-    set({ isLoading: true, error: null });
-
     try {
-      // const response = await fetch("https://your-api.com/auth/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     name: registerForm.name,
-      //     email: registerForm.email,
-      //     password: registerForm.password,
-      //   }),
-      // });
+      const { registerForm } = get();
 
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Registration failed");
-      // }
+      const response = await authAPI.register(registerForm);
+      set({ isLoading: true, error: null });
 
-      // const data: { user: User; token?: string } = await response.json();
-      const data = {
-        user: {
-          id: "1",
-          name: "Jane Doe",
-          email: "jane@test.com",
-        },
-      };
       set({
-        user: data.user,
+        user: response.data,
         isAuthenticated: true,
         isLoading: false,
         error: null,
