@@ -64,21 +64,7 @@ const Emprendimiento = () => {
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text style={styles.label}>Tamaño de organizacion</Text>
-            <View style={styles.pickerContainer}>
-              <Picker<(typeof registerForm)["edadEmpresa"]>
-                selectedValue={registerForm.edadEmpresa}
-                onValueChange={(itemValue) =>
-                  handleInputChange("edadEmpresa", itemValue)
-                }
-                style={styles.picker}
-              >
-                <Picker.Item label="Escoge" value={undefined} enabled={false} />
-                <Picker.Item label="6 meses" value="6 meses" />
-                <Picker.Item label="+1 año" value="+1 año" />
-                <Picker.Item label="+3 años" value="+3 años" />
-              </Picker>
-            </View>
+
             <Text style={styles.label}>Tamaño de la organizacion</Text>
             <View style={styles.pickerContainer}>
               <Picker<(typeof registerForm)["tamañoOrganizacion"]>

@@ -20,14 +20,11 @@ const Personalidad = () => {
 
   const handleRegister = async (): Promise<void> => {
     const result = await register();
-    if (result.success) {
-      Alert.alert("Registro Exitoso", "Tu registro ha sido completado.");
+    if (result.error) {
+      Alert.alert("Register Failed", result.error || "An error occurred");
       // Optionally, navigate to another screen or reset the form
       // router.replace("/home");
       // resetRegisterForm();
-      console.log("Register result:", result);
-    } else {
-      Alert.alert("Register Failed", result.error || "An error occurred");
     }
   };
 

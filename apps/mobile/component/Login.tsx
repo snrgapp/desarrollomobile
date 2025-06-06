@@ -17,9 +17,7 @@ const Login = () => {
 
   const handleLogin = async (): Promise<void> => {
     const result = await login();
-    if (result.success) {
-      console.log("Login successful", result.data);
-    } else {
+    if (result.error) {
       Alert.alert("Login Failed", result.error || "An error occurred");
     }
   };

@@ -16,11 +16,11 @@ const initialLoginForm: LoginForm = {
 };
 
 const initialRegisterForm: RegisterForm = {
-  name: "adib",
-  lastname: "raed",
-  password: "123",
-  phone: "123",
-  email: "adib@adib.com",
+  name: "",
+  lastname: "",
+  password: "",
+  phone: "",
+  email: "",
   emprendimiento: "",
   instagram: "",
   tamañoOrganizacion: undefined,
@@ -153,6 +153,7 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         } else {
           errorMessage = error.message;
         }
+        //fallback for AxiosError
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
