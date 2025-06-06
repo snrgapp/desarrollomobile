@@ -9,14 +9,8 @@ import {
 } from "react-native";
 
 const Register = () => {
-  const {
-    registerForm,
-    isLoading,
-    error,
-    updateRegisterForm,
-    register,
-    clearError,
-  } = useAuthStore();
+  const { registerForm, isLoading, error, updateRegisterForm, clearError } =
+    useAuthStore();
 
   const router = useRouter();
 
@@ -57,16 +51,16 @@ const Register = () => {
             <TextInput
               style={styles.input}
               placeholder="Ingresa"
-              value={registerForm.lastName}
-              onChangeText={(text) => handleInputChange("lastName", text)}
+              value={registerForm.lastname}
+              onChangeText={(text) => handleInputChange("lastname", text)}
             />
             <Text style={styles.label}>Whatsapp</Text>
             <TextInput
               keyboardType="numeric"
               style={styles.input}
               placeholder="Enter number"
-              value={registerForm.whatsapp}
-              onChangeText={(text) => handleInputChange("whatsapp", text)}
+              value={registerForm.phone}
+              onChangeText={(text) => handleInputChange("phone", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />

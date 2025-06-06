@@ -17,8 +17,9 @@ export interface LoginForm {
 
 export interface RegisterForm {
   name: string;
-  lastName: string;
-  whatsapp: string;
+  lastname: string;
+  password: string;
+  phone: string;
   email: string;
   emprendimiento?: string;
   instagram?: string;
@@ -30,6 +31,8 @@ export interface RegisterForm {
   datoCurioso?: string;
   pasion?: string;
   deporte?: string;
+  userType: "user";
+  source: "mobile";
   // Add any other fields you need for registration
 }
 
