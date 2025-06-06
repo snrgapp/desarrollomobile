@@ -44,9 +44,6 @@ const Personalidad = () => {
         </View>
       ) : (
         <>
-          {error ? (
-            <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
-          ) : null}
           <View>
             <Text style={styles.title}>Acerca de tu</Text>
             <Text style={styles.headerTitle}>PERSONALIDAD</Text>

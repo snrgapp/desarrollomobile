@@ -64,7 +64,7 @@ const Register = () => {
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text style={styles.label}>Correo</Text>
+            {/* <Text style={styles.label}>Correo</Text>
             <TextInput
               keyboardType="email-address"
               style={styles.input}
@@ -73,7 +73,7 @@ const Register = () => {
               onChangeText={(text) => handleInputChange("email", text)}
               autoCapitalize="none"
               autoCorrect={false}
-            />
+            /> */}
 
             <TouchableOpacity style={styles.button} onPress={handleRegister}>
               <Text style={styles.buttonText}>Siguente</Text>

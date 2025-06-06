@@ -1,6 +1,7 @@
 import type { LoginForm } from "@/stores/authStore";
 import useAuthStore from "@/stores/authStore";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Alert,
@@ -14,10 +15,17 @@ import {
 const Login = () => {
   const { loginForm, isLoading, error, updateLoginForm, login, clearError } =
     useAuthStore();
-
+  const router = useRouter();
   const handleLogin = async (): Promise<void> => {
     const result = await login();
     if (result.error) {
+      if (
+        result.success === false &&
+        result.error === "Usuario no encontrado"
+      ) {
+        clearError();
+        router.push("/emprendimiento");
+      }
       Alert.alert("Login Failed", result.error || "An error occurred");
     }
   };
@@ -44,9 +52,6 @@ const Login = () => {
           <Text style={styles.headerTitle}>Bienvenido</Text>
           <Text style={styles.title}>EMPRENDEDOR/A</Text>
           <Text style={styles.subtitle}>Ingresa tus datos</Text>
-          {error ? (
-            <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
-          ) : null}
           <View>
             <TouchableOpacity
               style={[

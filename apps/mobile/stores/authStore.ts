@@ -99,9 +99,24 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         success: true,
         data: response.data,
       };
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          if (error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          errorMessage = "No response from server";
+        } else {
+          errorMessage = error.message;
+        }
+        //fallback for AxiosError
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
 
       set({
         isLoading: false,

@@ -1,16 +1,10 @@
 import Register from "@/component/Register";
-import { Link } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function RegisterScreen() {
   return (
     <View style={styles.container}>
       <Register />
-      <Link href="/login" asChild replace>
-        <TouchableOpacity style={styles.linkButton}>
-          <Text style={styles.linkText}>Already have an account? Login</Text>
-        </TouchableOpacity>
-      </Link>
     </View>
   );
 }
