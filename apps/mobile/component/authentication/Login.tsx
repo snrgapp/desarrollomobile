@@ -72,7 +72,7 @@ const Login = () => {
                 >
                   <Image
                     style={styles.googleLogo}
-                    source={require("../assets/images/google-logo.png")}
+                    source={require("../../assets/images/google-logo.png")}
                   />
                   <Text style={styles.googleLabel}>Log in with Google</Text>
                 </View>

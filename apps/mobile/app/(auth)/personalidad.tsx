@@ -1,4 +1,4 @@
-import Personalidad from "@/component/Personalidad";
+import Personalidad from "@/component/authentication/Personalidad";
 import { StyleSheet, View } from "react-native";
 
 export default function RegisterScreen() {
