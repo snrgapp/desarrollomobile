@@ -1,4 +1,5 @@
-import useAuthStore, { RegisterForm } from "@/stores/authStore";
+import useAuthStore from "@/stores/authStore";
+import { RegisterForm } from "@/types/auth";
 import {
   Alert,
   StyleSheet,

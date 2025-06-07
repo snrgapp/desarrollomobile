@@ -1,5 +1,5 @@
-import type { LoginForm } from "@/stores/authStore";
 import useAuthStore from "@/stores/authStore";
+import { LoginForm } from "@/types/auth";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import {

@@ -1,10 +1,7 @@
 import Login from "@/component/Login";
-import useAuthStore from "@/stores/authStore";
 import { StyleSheet, View } from "react-native";
 
 export default function LoginScreen() {
-  const { isLoading } = useAuthStore();
-
   return (
     <View style={styles.container}>
       <Login />
