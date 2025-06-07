@@ -99,6 +99,7 @@ const Login = () => {
               placeholder="Password"
               value={loginForm.password}
               onChangeText={(value) => handleInputChange("password", value)}
+              secureTextEntry
               autoCapitalize="none"
               autoComplete="password"
               editable={!isLoading}
