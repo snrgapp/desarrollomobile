@@ -1,7 +1,7 @@
-import useAuthStore, { RegisterForm } from "@/stores/authStore";
+import useAuthStore from "@/stores/authStore";
+import { RegisterForm } from "@/types/auth";
 import { useRouter } from "expo-router";
 import {
-  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -10,24 +10,13 @@ import {
 } from "react-native";
 
 const Register = () => {
-  const {
-    registerForm,
-    isLoading,
-    error,
-    updateRegisterForm,
-    register,
-    clearError,
-  } = useAuthStore();
+  const { registerForm, isLoading, error, updateRegisterForm, clearError } =
+    useAuthStore();
 
   const router = useRouter();
 
   const handleRegister = async (): Promise<void> => {
-    const result = await register();
-    if (result.success) {
-      router.replace("/emprendimiento");
-    } else {
-      Alert.alert("Register Failed", result.error || "An error occurred");
-    }
+    router.replace("/emprendimiento");
   };
 
   const handleInputChange = (
@@ -55,40 +44,37 @@ const Register = () => {
             <Text style={styles.label}>Nombre</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.name}
               onChangeText={(text) => handleInputChange("name", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
             <Text style={styles.label}>Apellido</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
-              value={registerForm.lastName}
-              onChangeText={(text) => handleInputChange("lastName", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
+              placeholder="Ingresa"
+              value={registerForm.lastname}
+              onChangeText={(text) => handleInputChange("lastname", text)}
             />
             <Text style={styles.label}>Whatsapp</Text>
             <TextInput
               keyboardType="numeric"
               style={styles.input}
               placeholder="Enter number"
-              value={registerForm.whatsapp}
-              onChangeText={(text) => handleInputChange("whatsapp", text)}
+              value={registerForm.phone}
+              onChangeText={(text) => handleInputChange("phone", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <Text style={styles.label}>Correo</Text>
+            {/* <Text style={styles.label}>Correo</Text>
             <TextInput
+              keyboardType="email-address"
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.email}
               onChangeText={(text) => handleInputChange("email", text)}
               autoCapitalize="none"
               autoCorrect={false}
-            />
+            /> */}
 
             <TouchableOpacity style={styles.button} onPress={handleRegister}>
               <Text style={styles.buttonText}>Siguente</Text>

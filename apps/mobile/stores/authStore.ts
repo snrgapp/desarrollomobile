@@ -1,12 +1,7 @@
 // stores/authStore.ts
-import { authAPI } from "@/service/api";
-import {
-  ApiResponse,
-  AuthState,
-  LoginForm,
-  RegisterForm,
-  User,
-} from "@/types/auth";
+import { authAPI } from "@/service/authApi";
+import { ApiResponse, AuthState, LoginForm, RegisterForm } from "@/types/auth";
+import { AxiosError } from "axios";
 import { create } from "zustand";
 
 const initialLoginForm: LoginForm = {
@@ -16,19 +11,22 @@ const initialLoginForm: LoginForm = {
 
 const initialRegisterForm: RegisterForm = {
   name: "",
-  lastName: "",
-  whatsapp: "",
+  lastname: "",
+  password: "",
+  phone: "",
   email: "",
   emprendimiento: "",
   instagram: "",
-  tamañoOrganizacion: "",
-  actividad: "",
-  edadEmpresa: "",
+  tamañoOrganizacion: undefined,
+  actividad: undefined,
+  edadEmpresa: undefined,
   desafio: "",
-  comoSeEntero: "",
+  comoSeEntero: undefined,
   datoCurioso: "",
   pasion: "",
   deporte: "",
+  userType: "user",
+  source: "mobile",
 };
 
 const useAuthStore = create<AuthState>()((set, get) => ({
@@ -95,10 +93,64 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         success: true,
         data: response.data,
       };
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          if (error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          errorMessage = "No response from server";
+        } else {
+          errorMessage = error.message;
+        }
+        //fallback for AxiosError
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
 
+      set({
+        isLoading: false,
+        error: errorMessage,
+      });
+      return { success: false, error: errorMessage };
+    }
+  },
+
+  googleLogin: async (token: string): Promise<ApiResponse> => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await authAPI.googleLogin(token);
+      set({
+        user: response.data,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+      // Reset form after successful login
+      get().resetLoginForm();
+      return { success: true, data: response.data };
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          if (error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          errorMessage = "No response from server";
+        } else {
+          errorMessage = error.message;
+        }
+        //fallback for AxiosError
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
       set({
         isLoading: false,
         error: errorMessage,
@@ -109,44 +161,22 @@ const useAuthStore = create<AuthState>()((set, get) => ({
 
   // Register action
   register: async (): Promise<ApiResponse> => {
-    const { registerForm } = get();
-
-    // if (registerForm.password.length < 6) {
-    //   const errorMessage = "Password must be at least 6 characters";
-    //   set({ error: errorMessage });
-    //   return { success: false, error: errorMessage };
-    // }
-
-    set({ isLoading: true, error: null });
-
     try {
-      // const response = await fetch("https://your-api.com/auth/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     name: registerForm.name,
-      //     email: registerForm.email,
-      //     password: registerForm.password,
-      //   }),
-      // });
-
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || "Registration failed");
-      // }
-
-      // const data: { user: User; token?: string } = await response.json();
-      const data = {
-        user: {
-          id: "1",
-          name: "Jane Doe",
-          email: "jane@test.com",
-        },
+      const { registerForm } = get();
+      const postBody: RegisterForm = {
+        name: registerForm.name,
+        lastname: registerForm.lastname,
+        password: registerForm.password,
+        email: registerForm.email,
+        phone: registerForm.phone,
+        userType: registerForm.userType,
+        source: registerForm.source,
       };
+      const response = await authAPI.register(postBody);
+      set({ isLoading: true, error: null });
+
       set({
-        user: data.user,
+        user: response.data,
         isAuthenticated: true,
         isLoading: false,
         error: null,
@@ -156,9 +186,25 @@ const useAuthStore = create<AuthState>()((set, get) => ({
       get().resetRegisterForm();
 
       return { success: true, data: registerForm };
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          if (error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+          } else if (error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+          }
+        } else if (error.request) {
+          errorMessage = "No response from server";
+        } else {
+          errorMessage = error.message;
+        }
+        //fallback for AxiosError
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
 
       set({
         isLoading: false,
@@ -181,4 +227,3 @@ const useAuthStore = create<AuthState>()((set, get) => ({
 }));
 
 export default useAuthStore;
-export type { ApiResponse, AuthState, LoginForm, RegisterForm, User };

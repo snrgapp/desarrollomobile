@@ -1,4 +1,5 @@
-import useAuthStore, { RegisterForm } from "@/stores/authStore";
+import useAuthStore from "@/stores/authStore";
+import { RegisterForm } from "@/types/auth";
 import {
   Alert,
   StyleSheet,
@@ -20,10 +21,11 @@ const Personalidad = () => {
 
   const handleRegister = async (): Promise<void> => {
     const result = await register();
-    if (result.success) {
-      console.log("Register result:", result);
-    } else {
+    if (result.error) {
       Alert.alert("Register Failed", result.error || "An error occurred");
+      // Optionally, navigate to another screen or reset the form
+      // router.replace("/home");
+      // resetRegisterForm();
     }
   };
 
@@ -43,9 +45,6 @@ const Personalidad = () => {
         </View>
       ) : (
         <>
-          {error ? (
-            <Text style={{ color: "red", paddingBottom: 15 }}>{error}</Text>
-          ) : null}
           <View>
             <Text style={styles.title}>Acerca de tu</Text>
             <Text style={styles.headerTitle}>PERSONALIDAD</Text>
@@ -53,30 +52,25 @@ const Personalidad = () => {
             <Text style={styles.label}>Un dato curioso tuyo</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.datoCurioso}
               onChangeText={(text) => handleInputChange("datoCurioso", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-            <Text style={styles.label}>Pasion</Text>
+            <Text style={styles.label}>¿Que cosas te apasionan?</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.pasion}
               onChangeText={(text) => handleInputChange("pasion", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-            <Text style={styles.label}>Pagina web</Text>
+            <Text style={styles.label}>
+              ¿Practicas algun deporte o actividad?
+            </Text>
             <TextInput
-              keyboardType="numeric"
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.deporte}
               onChangeText={(text) => handleInputChange("deporte", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
           </View>
           <View>

@@ -1,7 +1,8 @@
-import useAuthStore, { RegisterForm } from "@/stores/authStore";
+import useAuthStore from "@/stores/authStore";
+import { RegisterForm } from "@/types/auth";
+import { Picker } from "@react-native-picker/picker";
 import { useRouter } from "expo-router";
 import {
-  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -10,32 +11,29 @@ import {
 } from "react-native";
 
 const Emprendimiento = () => {
-  const {
-    registerForm,
-    isLoading,
-    error,
-    updateRegisterForm,
-    register,
-    clearError,
-  } = useAuthStore();
+  const { registerForm, isLoading, error, updateRegisterForm, clearError } =
+    useAuthStore();
   const router = useRouter();
 
   const handleRegister = async (): Promise<void> => {
-    const result = await register();
-    if (result.success) {
-      router.replace("/personalidad");
-    } else {
-      Alert.alert("Register Failed", result.error || "An error occurred");
-    }
+    router.replace("/personalidad");
   };
 
-  const handleInputChange = (
-    field: keyof RegisterForm,
-    value: string
-  ): void => {
+  const handleInputChange = <K extends keyof RegisterForm>(
+    field: K,
+    value: RegisterForm[K]
+  ) => {
     if (error) clearError();
     updateRegisterForm(field, value);
   };
+
+  //   // Or if you're receiving field and value from form events:
+  // function handleFormChange<K extends keyof RegisterForm>(
+  //   field: K,
+  //   value: RegisterForm[K]
+  // ) {
+  //   updateRegisterForm(field, value);
+  // }
 
   return (
     <View style={styles.container}>
@@ -54,73 +52,96 @@ const Emprendimiento = () => {
             <Text style={styles.label}>Nombre de Emprendimiento</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.emprendimiento}
               onChangeText={(text) => handleInputChange("emprendimiento", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
             <Text style={styles.label}>Instagram</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa @"
               value={registerForm.instagram}
               onChangeText={(text) => handleInputChange("instagram", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
+
             <Text style={styles.label}>Tamaño de la organizacion</Text>
-            <TextInput
-              keyboardType="numeric"
-              style={styles.input}
-              placeholder="Enter number"
-              value={registerForm.tamañoOrganizacion}
-              onChangeText={(text) =>
-                handleInputChange("tamañoOrganizacion", text)
-              }
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
+            <View style={styles.pickerContainer}>
+              <Picker<(typeof registerForm)["tamañoOrganizacion"]>
+                selectedValue={registerForm.tamañoOrganizacion}
+                onValueChange={(itemValue) =>
+                  handleInputChange("tamañoOrganizacion", itemValue)
+                }
+                style={styles.picker}
+              >
+                <Picker.Item label="Escoge" value={undefined} enabled={false} />
+                <Picker.Item label="1-3 personas" value="1-3" />
+                <Picker.Item label="4-10 personas" value="4-10" />
+                <Picker.Item label="11-100 personas" value="11-100" />
+              </Picker>
+            </View>
             <Text style={styles.label}>Actividad que realiza</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter text"
-              value={registerForm.actividad}
-              onChangeText={(text) => handleInputChange("actividad", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
+            <View style={styles.pickerContainer}>
+              <Picker<(typeof registerForm)["actividad"]>
+                selectedValue={registerForm.actividad}
+                onValueChange={(itemValue) =>
+                  handleInputChange("actividad", itemValue)
+                }
+                style={styles.picker}
+              >
+                <Picker.Item label="Escoge" value={undefined} enabled={false} />
+                <Picker.Item label="Comercio" value="Comercio" />
+                <Picker.Item label="Servicio" value="Servicio" />
+                <Picker.Item label="Industria" value="Industria" />
+                <Picker.Item label="Tecnología" value="Tecnología" />
+                <Picker.Item label="Otro" value="Otro" />
+              </Picker>
+            </View>
             <Text style={styles.label}>Que tiempo tiene tu empresa</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter text"
-              value={registerForm.edadEmpresa}
-              onChangeText={(text) => handleInputChange("edadEmpresa", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
+            <View style={styles.pickerContainer}>
+              <Picker<(typeof registerForm)["edadEmpresa"]>
+                selectedValue={registerForm.edadEmpresa}
+                onValueChange={(itemValue) =>
+                  handleInputChange("edadEmpresa", itemValue)
+                }
+                style={styles.picker}
+              >
+                <Picker.Item label="Escoge" value={undefined} enabled={false} />
+                <Picker.Item label="6 meses" value="6 meses" />
+                <Picker.Item label="+1 año" value="+1 año" />
+                <Picker.Item label="+3 años" value="+3 años" />
+              </Picker>
+            </View>
             <Text style={styles.desafio}>Desafio que enfrenta</Text>
             <Text style={styles.subLabel}>(eso an lo que necesitas ayuda)</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter text"
+              placeholder="Ingresa"
               value={registerForm.desafio}
               onChangeText={(text) => handleInputChange("desafio", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
             />
-
             <Text style={styles.desafio}>
               ¿Como te enteraste de nuestas reuniones?
             </Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter text"
-              value={registerForm.comoSeEntero}
-              onChangeText={(text) => handleInputChange("comoSeEntero", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
+            <View style={styles.pickerContainer}>
+              <Picker<(typeof registerForm)["comoSeEntero"]>
+                selectedValue={registerForm.comoSeEntero}
+                onValueChange={(itemValue) =>
+                  handleInputChange("comoSeEntero", itemValue)
+                }
+                style={styles.picker}
+              >
+                <Picker.Item label="Escoge" value={undefined} enabled={false} />
+                <Picker.Item label="Amigo" value="Amigo" />
+                <Picker.Item label="Instagram" value="Instagram" />
+                <Picker.Item label="LinkedIn" value="LinkedIn" />
+                <Picker.Item
+                  label="Ya he venido antes"
+                  value="Ya he venido antes"
+                />
+              </Picker>
+            </View>
             <TouchableOpacity onPress={handleRegister} style={styles.button}>
               <Text style={styles.buttonText}>Siguente</Text>
             </TouchableOpacity>
@@ -159,6 +180,16 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#333",
     marginBottom: 8,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    backgroundColor: "#f9f9f9",
+    marginBottom: 15,
+  },
+  picker: {
+    height: 60,
   },
   desafio: {
     fontSize: 16,
