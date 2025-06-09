@@ -182,15 +182,15 @@ export default function LoginPage() {
               onChange={(e) => setPhone(e.target.value)}
               required
             />
-             {/* ESTE BLOQUE LO TENÍAS FUERA DEL RETURN */}
+             
               <select
                 className="w-full mb-4 p-2 border rounded"
                 value={userType}
                 onChange={(e) => setUserType(e.target.value)}
                 required
               >
-                <option value="user">Usuario</option>
-                <option value="admin">Administrador</option>
+                <option value="user">Usuario: </option>
+                <option value="admin">Administrador: </option>
               </select>
 
               {userType === "admin" && (
