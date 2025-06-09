@@ -1,4 +1,4 @@
-import Register from "@/component/Register";
+import Register from "@/component/authentication/Register";
 import { StyleSheet, View } from "react-native";
 
 export default function RegisterScreen() {

@@ -1,4 +1,4 @@
-import Emprendimiento from "@/component/Emprendimiento";
+import Emprendimiento from "@/component/authentication/Emprendimiento";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function RegisterScreen() {
