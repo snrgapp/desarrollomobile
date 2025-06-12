@@ -44,19 +44,16 @@ const Login = () => {
     }
 
     const result = await login();
-    if (result.success) {
-      Alert.alert("Login Successful", "You have logged in successfully");
+    if (result.error) {
+      if (
+        result.success === false &&
+        result.error === "Usuario no encontrado"
+      ) {
+        clearError();
+        router.push("/emprendimiento");
+      }
+      Alert.alert("Login Failed", result.error || "An error occurred");
     }
-    // if (result.error) {
-    //   if (
-    //     result.success === false &&
-    //     result.error === "Usuario no encontrado"
-    //   ) {
-    //     clearError();
-    //     router.push("/emprendimiento");
-    //   }
-    //   Alert.alert("Login Failed", result.error || "An error occurred");
-    // }
   };
 
   const handleInputChange = (field: keyof LoginForm, value: string): void => {

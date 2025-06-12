@@ -5,7 +5,6 @@ export const validateEmail = (email: string) => {
     .string()
     .check(
       z.minLength(5, "Email must be at least 5 characters long"),
-      z.maxLength(10, "Email must be at most 10 characters long"),
       z.refine((val) => val.includes("@"), "Must be a valid email"),
       z.trim()
     )
