@@ -44,14 +44,11 @@ const Login = () => {
 
     const result = await login();
     if (result.error) {
-      if (
-        result.success === false &&
-        result.error === "Usuario no encontrado"
-      ) {
-        clearError();
-        router.push("/emprendimiento");
-      }
-      Alert.alert("Login Failed", result.error || "An error occurred");
+      Alert.alert("Error", result.error);
+      return;
+    }
+    if (result.success) {
+      router.push("/emprendimiento");
     }
   };
 

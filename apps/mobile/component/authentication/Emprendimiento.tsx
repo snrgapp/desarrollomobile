@@ -27,14 +27,6 @@ const Emprendimiento = () => {
     updateRegisterForm(field, value);
   };
 
-  //   // Or if you're receiving field and value from form events:
-  // function handleFormChange<K extends keyof RegisterForm>(
-  //   field: K,
-  //   value: RegisterForm[K]
-  // ) {
-  //   updateRegisterForm(field, value);
-  // }
-
   return (
     <View style={styles.container}>
       {isLoading ? (
