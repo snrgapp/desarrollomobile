@@ -39,8 +39,7 @@ const Login = () => {
         "password",
         passwordValidation.error?.issues[0]?.message || ""
       );
-
-      console.log(validationError.email);
+      return;
     }
 
     const result = await login();

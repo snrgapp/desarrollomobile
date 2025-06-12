@@ -20,3 +20,12 @@ export const validatePassword = (password: string) => {
     )
     .safeParse(password);
 };
+
+export const validatePhone = (phone: string) => {
+  z.regex(/^\+?[\d\s\-\(\)]+$/, "Invalid phone number format");
+  z.string().check(
+    z.minLength(10, "Phone number must be at least 10 characters long"),
+    z.maxLength(15, "Phone number must be at most 15 characters long")
+  );
+  return z.string().safeParse(phone);
+};

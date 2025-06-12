@@ -1,3 +1,4 @@
+import { validatePhone } from "@/schemas/authSchema";
 import useAuthStore from "@/stores/authStore";
 import { RegisterForm } from "@/types/auth";
 import { useRouter } from "expo-router";
@@ -10,12 +11,27 @@ import {
 } from "react-native";
 
 const Register = () => {
-  const { registerForm, isLoading, error, updateRegisterForm, clearError } =
-    useAuthStore();
+  const {
+    registerForm,
+    isLoading,
+    error,
+    validationError,
+    updateRegisterForm,
+    clearError,
+    setValidationError,
+  } = useAuthStore();
 
   const router = useRouter();
 
   const handleRegister = async (): Promise<void> => {
+    const phoneValidation = validatePhone(registerForm.phone);
+    if (!phoneValidation.success) {
+      setValidationError(
+        "phone",
+        phoneValidation.error?.issues[0]?.message || ""
+      );
+      return;
+    }
     router.replace("/emprendimiento");
   };
 
@@ -57,25 +73,18 @@ const Register = () => {
             />
             <Text style={styles.label}>Whatsapp</Text>
             <TextInput
-              keyboardType="numeric"
-              style={styles.input}
+              style={[styles.input, validationError.phone && styles.inputError]}
+              keyboardType="phone-pad"
+              maxLength={15}
               placeholder="Enter number"
               value={registerForm.phone}
               onChangeText={(text) => handleInputChange("phone", text)}
               autoCapitalize="none"
               autoCorrect={false}
             />
-            {/* <Text style={styles.label}>Correo</Text>
-            <TextInput
-              keyboardType="email-address"
-              style={styles.input}
-              placeholder="Ingresa"
-              value={registerForm.email}
-              onChangeText={(text) => handleInputChange("email", text)}
-              autoCapitalize="none"
-              autoCorrect={false}
-            /> */}
-
+            {validationError.phone && (
+              <Text style={styles.errorText}>{validationError.phone}</Text>
+            )}
             <TouchableOpacity style={styles.button} onPress={handleRegister}>
               <Text style={styles.buttonText}>Siguente</Text>
             </TouchableOpacity>
@@ -136,6 +145,17 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  inputError: {
+    borderColor: "#ff4444",
+    borderWidth: 2,
+  },
+  errorText: {
+    color: "#ff4444",
+    fontSize: 12,
+    marginBottom: 10,
+    marginLeft: 5,
+    fontFamily: "Montserrat-Regular",
   },
 });
 
