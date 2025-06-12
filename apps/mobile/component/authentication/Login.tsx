@@ -1,3 +1,4 @@
+import { validateEmail, validatePassword } from "@/schemas/authSchema";
 import useAuthStore from "@/stores/authStore";
 import { LoginForm } from "@/types/auth";
 import { Image } from "expo-image";
@@ -13,21 +14,49 @@ import {
 } from "react-native";
 
 const Login = () => {
-  const { loginForm, isLoading, error, updateLoginForm, login, clearError } =
-    useAuthStore();
+  const {
+    loginForm,
+    isLoading,
+    error,
+    validationError,
+    updateLoginForm,
+    login,
+    clearError,
+    setValidationError,
+  } = useAuthStore();
   const router = useRouter();
+
   const handleLogin = async (): Promise<void> => {
-    const result = await login();
-    if (result.error) {
-      if (
-        result.success === false &&
-        result.error === "Usuario no encontrado"
-      ) {
-        clearError();
-        router.push("/emprendimiento");
-      }
-      Alert.alert("Login Failed", result.error || "An error occurred");
+    const emailValidation = validateEmail(loginForm.email);
+    const passwordValidation = validatePassword(loginForm.password);
+
+    if (!emailValidation.success || !passwordValidation.success) {
+      setValidationError(
+        "email",
+        emailValidation.error?.issues[0]?.message || ""
+      );
+      setValidationError(
+        "password",
+        passwordValidation.error?.issues[0]?.message || ""
+      );
+
+      console.log(validationError.email);
     }
+
+    const result = await login();
+    if (result.success) {
+      Alert.alert("Login Successful", "You have logged in successfully");
+    }
+    // if (result.error) {
+    //   if (
+    //     result.success === false &&
+    //     result.error === "Usuario no encontrado"
+    //   ) {
+    //     clearError();
+    //     router.push("/emprendimiento");
+    //   }
+    //   Alert.alert("Login Failed", result.error || "An error occurred");
+    // }
   };
 
   const handleInputChange = (field: keyof LoginForm, value: string): void => {
@@ -83,28 +112,44 @@ const Login = () => {
               <Text style={styles.text}>Or use you email</Text>
               <View style={styles.line} />
             </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={loginForm.email}
-              onChangeText={(value) => handleInputChange("email", value)}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-              editable={!isLoading}
-              testID="email-input"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={loginForm.password}
-              onChangeText={(value) => handleInputChange("password", value)}
-              secureTextEntry
-              autoCapitalize="none"
-              autoComplete="password"
-              editable={!isLoading}
-              testID="password-input"
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[
+                  styles.input,
+                  validationError.email && styles.inputError,
+                ]}
+                placeholder="Email"
+                value={loginForm.email}
+                onChangeText={(value) => handleInputChange("email", value)}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
+                editable={!isLoading}
+                testID="email-input"
+              />
+              {validationError.email && (
+                <Text style={styles.errorText}>{validationError.email}</Text>
+              )}
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[
+                  styles.input,
+                  validationError.password && styles.inputError,
+                ]}
+                placeholder="Password"
+                value={loginForm.password}
+                onChangeText={(value) => handleInputChange("password", value)}
+                secureTextEntry
+                autoCapitalize="none"
+                autoComplete="password"
+                editable={!isLoading}
+                testID="password-input"
+              />
+              {validationError.password && (
+                <Text style={styles.errorText}>{validationError.password}</Text>
+              )}
+            </View>
             <TouchableOpacity
               style={[
                 styles.button,
@@ -159,14 +204,17 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     color: "#666",
   },
+  inputContainer: {
+    marginBottom: 15,
+  },
   input: {
+    padding: 10,
+    margin: 0,
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 8,
-    padding: 15,
-    marginBottom: 15,
-    fontSize: 16,
     backgroundColor: "#f9f9f9",
+    fontSize: 16,
     fontFamily: "Montserrat-Regular",
   },
 
@@ -231,6 +279,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  inputError: {
+    borderColor: "#ff4444",
+    borderWidth: 2,
+  },
+  errorText: {
+    color: "#ff4444",
+    fontSize: 12,
+    marginBottom: 10,
+    marginLeft: 5,
+    fontFamily: "Montserrat-Regular",
   },
 });
 

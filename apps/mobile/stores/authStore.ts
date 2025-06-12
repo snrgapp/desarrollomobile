@@ -1,6 +1,12 @@
 // stores/authStore.ts
 import { authAPI } from "@/service/authApi";
-import { ApiResponse, AuthState, LoginForm, RegisterForm } from "@/types/auth";
+import {
+  ApiResponse,
+  AuthState,
+  LoginForm,
+  RegisterForm,
+  validationError,
+} from "@/types/auth";
 import { AxiosError } from "axios";
 import { create } from "zustand";
 
@@ -29,12 +35,33 @@ const initialRegisterForm: RegisterForm = {
   source: "mobile",
 };
 
+const initialValidationError: validationError = {
+  email: "",
+  password: "",
+  name: "",
+  lastname: "",
+  phone: "",
+  emprendimiento: "",
+  instagram: "",
+  tamañoOrganizacion: "",
+  actividad: "",
+  edadEmpresa: "",
+  desafio: "",
+  comoSeEntero: "",
+  datoCurioso: "",
+  pasion: "",
+  deporte: "",
+  userType: "",
+  source: "",
+};
+
 const useAuthStore = create<AuthState>()((set, get) => ({
   // Initial state
   user: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  validationError: initialValidationError,
   loginForm: initialLoginForm,
   registerForm: initialRegisterForm,
 
@@ -69,6 +96,14 @@ const useAuthStore = create<AuthState>()((set, get) => ({
   setLoading: (loading: boolean) => set({ isLoading: loading }),
 
   setError: (error: string | null) => set({ error }),
+
+  setValidationError: (field: string, value: unknown) =>
+    set((state) => ({
+      validationError: {
+        ...state.validationError,
+        [field]: value,
+      },
+    })),
 
   clearError: () => set({ error: null }),
 

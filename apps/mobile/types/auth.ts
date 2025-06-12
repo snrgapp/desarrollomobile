@@ -36,12 +36,32 @@ export interface RegisterForm {
   // Add any other fields you need for registration
 }
 
+export interface validationError {
+  email?: string;
+  password?: string;
+  name?: string;
+  lastname?: string;
+  phone?: string;
+  emprendimiento?: string;
+  instagram?: string;
+  tamañoOrganizacion?: string;
+  actividad?: string;
+  edadEmpresa?: string;
+  desafio?: string;
+  comoSeEntero?: string;
+  datoCurioso?: string;
+  pasion?: string;
+  deporte?: string;
+  userType?: string;
+  source?: string;
+}
 export interface AuthState {
   // Auth state
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  validationError: validationError;
 
   // Form data
   loginForm: LoginForm;
@@ -62,6 +82,10 @@ export interface AuthState {
   // Auth actions
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setValidationError: {
+    <K extends keyof RegisterForm>(field: K, value: RegisterForm[K]): void;
+    <K extends keyof LoginForm>(field: K, value: LoginForm[K]): void;
+  };
   clearError: () => void;
   login: () => Promise<ApiResponse>;
   register: () => Promise<ApiResponse>;
