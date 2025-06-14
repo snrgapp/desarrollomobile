@@ -1,23 +1,24 @@
 import Emprendimiento from "@/component/authentication/Emprendimiento";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  KeyboardAwareScrollView,
+  KeyboardProvider,
+} from "react-native-keyboard-controller";
 
 export default function RegisterScreen() {
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.contentContainer}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={20}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
-      <ScrollView>
-        <View style={styles.container}>
-          <Emprendimiento />
-        </View>
-      </ScrollView>
-    </KeyboardAwareScrollView>
+    <KeyboardProvider>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <ScrollView>
+          <View style={styles.container}>
+            <Emprendimiento />
+          </View>
+        </ScrollView>
+      </KeyboardAwareScrollView>
+    </KeyboardProvider>
   );
 }
 

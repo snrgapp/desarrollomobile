@@ -107,6 +107,7 @@ const Login = () => {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
+                placeholderTextColor="black"
                 style={[
                   styles.input,
                   validationError.email && styles.inputError,
@@ -126,6 +127,7 @@ const Login = () => {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
+                placeholderTextColor="black"
                 style={[
                   styles.input,
                   validationError.password && styles.inputError,

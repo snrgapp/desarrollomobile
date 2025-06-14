@@ -4,7 +4,6 @@
   "main": "lib/mongodb.js",
   "type": "module",
   "license": "ISC",
- 
   "dependencies": {
     "mongodb": "^5.9.2",
     "mongoose": "^8.15.0"

@@ -43,6 +43,7 @@ const Emprendimiento = () => {
           <View>
             <Text style={styles.label}>Nombre de Emprendimiento</Text>
             <TextInput
+              placeholderTextColor="black"
               style={styles.input}
               placeholder="Ingresa"
               value={registerForm.emprendimiento}
@@ -50,6 +51,7 @@ const Emprendimiento = () => {
             />
             <Text style={styles.label}>Instagram</Text>
             <TextInput
+            placeholderTextColor="black"
               style={styles.input}
               placeholder="Ingresa @"
               value={registerForm.instagram}
@@ -61,6 +63,7 @@ const Emprendimiento = () => {
             <Text style={styles.label}>Tamaño de la organizacion</Text>
             <View style={styles.pickerContainer}>
               <Picker<(typeof registerForm)["tamañoOrganizacion"]>
+                dropdownIconColor={"black"}
                 selectedValue={registerForm.tamañoOrganizacion}
                 onValueChange={(itemValue) =>
                   handleInputChange("tamañoOrganizacion", itemValue)
@@ -76,6 +79,7 @@ const Emprendimiento = () => {
             <Text style={styles.label}>Actividad que realiza</Text>
             <View style={styles.pickerContainer}>
               <Picker<(typeof registerForm)["actividad"]>
+                dropdownIconColor={"black"}
                 selectedValue={registerForm.actividad}
                 onValueChange={(itemValue) =>
                   handleInputChange("actividad", itemValue)
@@ -93,6 +97,7 @@ const Emprendimiento = () => {
             <Text style={styles.label}>Que tiempo tiene tu empresa</Text>
             <View style={styles.pickerContainer}>
               <Picker<(typeof registerForm)["edadEmpresa"]>
+                dropdownIconColor={"black"}
                 selectedValue={registerForm.edadEmpresa}
                 onValueChange={(itemValue) =>
                   handleInputChange("edadEmpresa", itemValue)
@@ -108,6 +113,7 @@ const Emprendimiento = () => {
             <Text style={styles.desafio}>Desafio que enfrenta</Text>
             <Text style={styles.subLabel}>(eso an lo que necesitas ayuda)</Text>
             <TextInput
+            placeholderTextColor="black"
               style={styles.input}
               placeholder="Ingresa"
               value={registerForm.desafio}
@@ -118,6 +124,7 @@ const Emprendimiento = () => {
             </Text>
             <View style={styles.pickerContainer}>
               <Picker<(typeof registerForm)["comoSeEntero"]>
+                dropdownIconColor={"black"}
                 selectedValue={registerForm.comoSeEntero}
                 onValueChange={(itemValue) =>
                   handleInputChange("comoSeEntero", itemValue)
@@ -179,8 +186,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "#f9f9f9",
     marginBottom: 15,
+    color: "black",
   },
   picker: {
+    color: "black",
     height: 60,
   },
   desafio: {

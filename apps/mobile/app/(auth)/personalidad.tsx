@@ -1,21 +1,22 @@
 import Personalidad from "@/component/authentication/Personalidad";
 import { StyleSheet, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  KeyboardAwareScrollView,
+  KeyboardProvider,
+} from "react-native-keyboard-controller";
 
 export default function RegisterScreen() {
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.contentContainer}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={20}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.container}>
-        <Personalidad />
-      </View>
-    </KeyboardAwareScrollView>
+    <KeyboardProvider>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.container}>
+          <Personalidad />
+        </View>
+      </KeyboardAwareScrollView>
+    </KeyboardProvider>
   );
 }
 

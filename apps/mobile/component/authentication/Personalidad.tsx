@@ -51,6 +51,7 @@ const Personalidad = () => {
 
             <Text style={styles.label}>Un dato curioso tuyo</Text>
             <TextInput
+            placeholderTextColor="black"
               style={styles.input}
               placeholder="Ingresa"
               value={registerForm.datoCurioso}
@@ -58,6 +59,7 @@ const Personalidad = () => {
             />
             <Text style={styles.label}>¿Que cosas te apasionan?</Text>
             <TextInput
+            placeholderTextColor="black"
               style={styles.input}
               placeholder="Ingresa"
               value={registerForm.pasion}
@@ -67,6 +69,7 @@ const Personalidad = () => {
               ¿Practicas algun deporte o actividad?
             </Text>
             <TextInput
+            placeholderTextColor="black"
               style={styles.input}
               placeholder="Ingresa"
               value={registerForm.deporte}

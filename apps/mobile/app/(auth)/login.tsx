@@ -1,21 +1,22 @@
 import Login from "@/component/authentication/Login";
 import { StyleSheet, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  KeyboardProvider,
+  KeyboardAwareScrollView,
+} from "react-native-keyboard-controller";
 
 export default function LoginScreen() {
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.contentContainer}
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={50}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.container}>
-        <Login />
-      </View>
-    </KeyboardAwareScrollView>
+    <KeyboardProvider>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.container}>
+          <Login />
+        </View>
+      </KeyboardAwareScrollView>
+    </KeyboardProvider>
   );
 }
 

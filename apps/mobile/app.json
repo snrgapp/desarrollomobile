@@ -1,21 +1,16 @@
 {
   "expo": {
-    "name": "",
-    "slug": "client",
+    "name": "SynergyApp",
+    "slug": "Synergy",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo2.png",
+    "icon": "./assets/images/logo-oscuro.png",
     "scheme": "client",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "assetBundlePatterns": ["assets/fonts/*"],
     "ios": {
-      "supportsTablet": true,
-      "icons": {
-        "dark": "./assets/icons/ios-dark.png.png",
-        "light": "./assets/icons/ios-light.png",
-        "tinted": "./assets/icons/ios-tinted.png"
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -23,15 +18,12 @@
         "monochromeImage": "./assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "navigationBar": {
-        "backgroundColor": "#ffffff",
-        "barStyle": "dark-content"
-      }
+      "package": "com.synergyapps.Synergy"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/logo2.png"
+      "favicon": "./assets/images/logo-oscuro.png"
     },
     "plugins": [
       "expo-router",
@@ -51,7 +43,7 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Montserrat-Regutar.ttf"],
+          "fonts": ["./assets/fonts/Montserrat-Regular.ttf"],
           "android": {
             "usesCleartextTraffic": true,
             "fonts": [
@@ -96,6 +88,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "94e33a92-4736-46e4-aeb8-411e950feb1a"
+      }
+    },
+    "owner": "synergyapps"
   }
 }
