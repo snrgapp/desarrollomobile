@@ -82,7 +82,7 @@ const Login = () => {
               ]}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+                <ActivityIndicator color="black" />
               ) : (
                 <View
                   style={{
@@ -192,12 +192,11 @@ const styles = StyleSheet.create({
   subtitle: {
     paddingTop: 50,
     paddingBottom: 20,
-    // fontFamily: "Montserrat",
     fontWeight: "400",
     fontSize: 18,
     textAlign: "center",
     marginBottom: 30,
-    color: "#666",
+    color: "black",
   },
   inputContainer: {
     marginBottom: 15,
@@ -211,6 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
     fontSize: 16,
     fontFamily: "Montserrat-Regular",
+    color: "black",
   },
 
   googleButton: {
